@@ -1,0 +1,108 @@
+% Appendicies =======================================
+\ifpdf
+    \graphicspath{{Appendix1/Figs/Raster/}{Appendix1/Figs/PDF/}{Appendix1/Figs/}}
+\else
+    \graphicspath{{Appendix1/Figs/Vector/}{Appendix1/Figs/}}
+\fi
+
+\chapter{Supplementary Data} 
+\section*{Instrumentation}
+\begin{figure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{enclosure_back}
+    \end{subfigure}
+    \hspace*{\fill}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{enclosure_cross_section}
+    \end{subfigure}
+    \caption{The completed front-end thermal enclosure is shown on the left. A 3D-rendered cross section in a similar orientation is shown on the right depicting the internal fan, baseplate, Peltier module and heat sink configuration.}
+    \label{fig:enclose_supp}
+\end{figure}
+
+
+\begin{table}
+    \begin{center}
+    \begin{tabular}{ |c|c|c| }
+    \hline
+    Switch name & Model (Mini-Circuits) & Connection \\
+    \hline
+    MS1 & 12V MSP8TA-12-12D+ & Calibration sources \\
+    MS2 & 24V MSP6TA-12D+& VNA path/calibration components \\
+    MS3 & UNKNOWN & 2 metre cable terminations \\
+    MS4 & UNKNOWN & 10 metre cable terminations \\
+    MTS & 24V MTS-18XL-B+ & Spectrometer/VNA signal path \\
+    \hline
+    \end{tabular}
+    \caption{Switch model number and connections from within the receiver front-end for reference.}
+    \label{tab:switches}
+    \end{center}
+\end{table}
+
+\begin{table}
+    \begin{center}
+    \begin{tabular}{ |c|c|c| }
+        \hline
+        {Switch} & {Position} & {Contents}\\
+        \hline
+        MS1 & 1 & Antenna \\
+        MS1 & 2 & Heated $50 \Omega$ load \\
+        MS1 & 3 & Reference noise source (diode) \\
+        MS1 & 4 & Ambient $50 \Omega$ (cold) load \\
+        MS1 & 5 & Ambient $25 \Omega$ load \\
+        MS1 & 6 & Ambient $100 \Omega$ load \\
+        MS1 & 7 & 2 metre calibration cable \\
+        MS1 & 8 & 10 metre calibration cable \\
+        \hline
+        MS2 & 1 & MTS position 1 (towards calibration sources) \\
+        MS2 & 2 & MTS position 3 (towards spectrometer path) \\
+        MS2 & 3 & VNA calibration short \\
+        MS2 & 4 & VNA calibration open \\
+        MS2 & 5 & VNA calibration $50 \Omega$ load \\
+        MS2 & 6 & VNA verification $50 \Omega$ test load \\
+        \hline
+        MS3 & 1 & $36 \Omega$ load \\
+        MS3 & 2 & $27 \Omega$ load \\
+        MS3 & 3 & $69 \Omega$ load \\
+        MS3 & 4 & $91 \Omega$ load \\
+        \hline
+        MS4 & 1 & Open termination \\
+        MS4 & 2 & Shorted termination \\
+        MS4 & 3 & $10 \Omega$ load \\
+        MS4 & 4 & $250 \Omega$ load \\
+        \hline
+        MTS & 1 & MS2 position 1 (calibration sources to VNA) \\
+        MTS & 2 & MS1 (towards calibration sources) \\
+        MTS & 3 & MS2 position 2 (LNA to VNA) \\
+        MTS & 4 & Towards LNA (sources to spectrometer)\\
+        \hline
+    \end{tabular}
+    \end{center}
+    \caption{The content of each switch position for easy reference. This chart represents the receiver component positions at the time of the December 2022 deployment.}
+    \label{tab:switch_content}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{ |c|c|c| }
+        \hline
+        Power supply & Switchable & Component \\
+        \hline
+        3.3 V & No & Teensy 3.5 Development Board \\
+        5 V & No & Fibre to USB converter \\
+        6 V (A) & Yes & Low noise amplifier \\
+        6 V (B) & Yes & Low noise amplifier \\
+        12 V & Yes & VNA, RF switches \\
+        24 V & Yes & Internal fan, RF switches \\
+        28 V & Yes & Noise source diode \\
+        \hline
+    \end{tabular}
+    \caption{Power supply considerations for the front-end receiver managed by the microcontroller unit. The ability to toggle the 5 V supply was disabled at the hardware-level in order to prevent accidental user activation which would result in a (catastrophic) completely non-responsive instrument.}
+    \label{tab:power_supply}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.2]{power_chamber.jpeg}
+    \caption{The smaller RF-EMC chamber accompanying the receiver back-end. This chamber houses various additional units for overnight power storage from the solar panels. The black module adorned with the yellow "X" symbol is the Solar MD SS202 Lithium Iron Phosphate battery.}
+    \label{fig:power_chamber}
+\end{figure}
