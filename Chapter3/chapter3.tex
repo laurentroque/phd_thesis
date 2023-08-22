@@ -407,7 +407,7 @@ While an alternative LNA built instead with Mini-Circuits ERA-50SM+ gain blocks 
 
 % =========================================
 \subsubsection{RF signal chain II: Amplifier \#1}
-The second stage of spectral data amplification uses another custom module called ‘Amplifier \#1’, or AMP1. Incoming signals from the LNA are further amplified using a Mini-Circuits GALI-S66+ limiting amplifier and a PHA-13LN+ mid-power amplifier in combination to achieve maximal dynamic range followed by high-pass filtering using a Mini-Circuits RHP-44+ filter to attenuate frequencies below the observation band. A 2-stage Mini-Circuits XLF-42M+ monolithic microwave integrated circuit (MMIC) then low-pass filters out-of-band signals above the observation band up to many GHz.
+The second stage of spectral data amplification uses another custom module called ‘Amplifier \#1’, or AMP1\footnote{Like all good computer scientists, we have numbered our amplifiers using a zero-based system with the LNA, AMP1 and AMP2 being amplifiers number zero, one and two respectively in the RF signal chain.}. Incoming signals from the LNA are further amplified using a Mini-Circuits GALI-S66+ limiting amplifier and a PHA-13LN+ mid-power amplifier in combination to achieve maximal dynamic range followed by high-pass filtering using a Mini-Circuits RHP-44+ filter to attenuate frequencies below the observation band. A 2-stage Mini-Circuits XLF-42M+ monolithic microwave integrated circuit (MMIC) then low-pass filters out-of-band signals above the observation band up to many GHz.
 
 Serving as the internal circuit boundary of the front-end receiver, AMP1 converts signals to Radio-Frequency-over-Fibre for transmission to the receiver back-end minimising the effects of RFI and signal loss that would be typical of alternative connections such as coaxial cables. The passive 1310 nm RFoF converter was made under commission by Polycom according to the specifications for the HERA experiment and has an 18 dB loss due the relative intensity noise of the optical transmission laser which is addressed by 70 dB of upfront gain to reduce the impact of higher noise on the system. The optical transmitter subassembly (as well as the corresponding back-end optical receiver) are printed circuit boards terminated in Fibre Channel/Angled Physical Contact (FC/APC) connectors at the end of a 0.5 metre pigtail as seen in \cref{fig:amp1}.
 \begin{figure}
@@ -470,10 +470,48 @@ Within the RF-EMC enclosure are the various back-end modules mounted on a 36-inc
 
 % =========================================
 \subsubsection{RF signal chain III: Amplifier \#2 and out-of-band injection}
+The first device in the receiver back-end is our third stage of amplification with Amplifier \#2 (AMP2). Upon entering AMP2, the RFoF signal from the front-end is converted back into an RF signal by the optical receiver, again constructed with an FC/APC connection to a Polycom printed circuit board mounted to the AMP2 module. The next task of AMP2 is to continue filtering the signal using another Mini-Circuits XLF-42M+ 2-stage MMIC low-pass filter to block high-frequency out-of-band signals. To sharply filter signals outside the REACH observational band (above 170 MHz), a custom 11-order Cauer Chebyshev low-pass filter was designed using a series of five 1812SMS air core inductors made by Coilcraft as shown in the circuit diagram \cref{fig:amp2_schematic}. Following this, the signal is amplified using two more Mini-Circuits GALI-S66+ and PHA-13LN+ amplifiers, as used in AMP1, to achieve best dynamic range prior to the analogue-to-digital converter (ADC) within the iTPM spectrometer module. Low-loss 3 dB Mini-Circuits RCAT-03+ equalisation circuits are also used throughout AMP2 to flatten the passband to 2 dB. The final sub-component of AMP2 is a power splitter to output two equal signals from the module with one path going to the ADC/spectrometer unit and the duplicated signal available for additional devices such as another ADC or a power meter for remote monitoring as done with the HERA experiment.
+
+Supplementary to AMP2 was an optional module for out-of-band continuous wave or filtered noise signal injection to condition the ADC. This unit was built to inject a constant power (adjustable through the inclusion of attenuators) at 10 MHz and is band limited to DC--20 MHz, strictly outside the REACH observational band as not to contaminate the measurement. An example of the injected out-of-band noise from this module is shown in \cref{fig:oob_cond}, though this feature was not used in the final deployed system as it provided no tangible improvements to the data as discussed in the THINGS THAT DIDNT WORK SECTION.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{oob_cond}
+    \caption{A power spectral measurement of the ambient temperature $50 \Omega$ load with the out-of-band noise injection module activated. A constant power is injected at 10 MHz and can be used to assess the accuracy of the spectrometer reading as well as condition the ADC for low-power signals. Attenuators were used to prevent signals resonant to the 10 MHz injection from intercepting the in-band measurements. The spike at 0 MHz is an artefact of the spectrometer and receiver architecture and is not considered a hazard to the measurement.}
+    \label{fig:oob_cond}
+\end{figure}
+The completed AMP2 and out-of-band injection unit are shown in \cref{fig:amp2} which represent the final components of the RF signal chain.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{amp2}
+    \caption{The completed Amplifier \#2 (left) and out-of-band noise injection module (right) for inclusion in the receiver back-end. The ‘Fibre In’ port on AMP2 connects to the RFoF link from the front-end and the power splitter outputs identical signals to the ports labelled ‘Outputs’. The ‘Noise Output’ ports from the noise injection module would connect to the ‘Noise In’ port of AMP2 though this is not currently applied to measurements in the field.}
+    \label{fig:amp2}
+\end{figure}
 
 
 % =========================================
 \subsubsection{RF signal chain IV: Simulations}
+Within the design process of the RF signal chain components; the LNA, AMP1 and AMP2, were various stages of optimisation and fine-tuning. Constituent elements within the LNA were first simulated then built and measured with the VNA as shown in \cref{fig:lna_sparams}. This data was then imported back into the simulation to further inform the development of the signal chain as a whole. Simulations were undertaken using the Keysight PathWave RF Synthesis software (formerly known as Genesys) with the in-program optimisation tool used to optimise filter design. Both linear analysis and the Keysight Spectrasys RF System Simulation software were also employed for RF budget simulations with other components simulated using Modelithics’ substrate scalable models. Also included in the simulations were the AMP1 optical transmitter, AMP2 optical receiver and 100 metres of single-mode fibre to replicate the complete RF signal chain as shown in \cref{fig:chain_block_diag}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{chain_block_diag}
+    \caption{REACH RF system end-to-end block simulations made with the Keysight PathWave RF Synthesis software showing the LNA, AMP1, AMP2 as well as the RFoF link.}
+    \label{fig:chain_block_diag}
+\end{figure}
+The results of the full RF signal chain simulations are shown in \cref{fig:chain_sim} where we highlight the flat noise figure of the network over the observational band.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{chain_sim}
+    \caption{Simulated radio-frequency response of the REACH end-to-end signal-chain as diagrammed in \cref{fig:chain_block_diag} which includes the LNA, AMP1, AMP2 and RFoF modules. VNA measurements of the LNA have been included in this simulation as well. The shaded region represents the REACH observation band where we see a flat noise figure throughout. Adapted from figure included in REACH NATURE PAPER.}
+    \label{fig:chain_sim}
+\end{figure}
+
+
+% =========================================
+\subsubsection{Spectrometer}
+
+
+% =========================================
+\subsubsection{Spectral measurement enclosure (big silver box)}
 
 
 % =========================================
@@ -481,6 +519,6 @@ Within the RF-EMC enclosure are the various back-end modules mounted on a 36-inc
 \begin{figure}
     \centering
     \includegraphics{controller_pinout}
-    \caption{A reference sheet listing the front-end component assignments to the Teensy input/output ports for use in receiver automation. Individual switch positions, power supplies and components can be seen facilitating the creation of new automated routines and on-the-fly system interaction via command line interface. MS‘N’--‘P’ refers to mechanical RF switch number N, port P. MTS is the mechanical transfer switch. TEC is the thermo-electric cooler module.}
+    \caption{A reference sheet listing the front-end component assignments to the Teensy input/output ports for use in receiver automation. Individual switch positions, power supplies and components can be seen facilitating the creation of new automated routines and on-the-fly system interaction via command line interface. MS‘N’--‘P’ refers to mechanical RF switch number N, port P. ‘MTS’ is the mechanical transfer switch. ‘TEC’ is the thermo-electric cooler module.}
     \label{fig:enter-label}
 \end{figure}
