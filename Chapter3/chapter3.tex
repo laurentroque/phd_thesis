@@ -28,7 +28,7 @@ In response to these considerations, the REACH receiver system is comprised of t
 
 
 % =========================================
-\subsection{Receiver front-end}
+\subsection{Receiver front-end}\label{sec:frontend}
 The front-end contains the most sensitive radiometer components housed in a sealed enclosure to facilitate calibration of the instrument to the highest accuracy. As the maintenance of environmental stability is difficult to achieve over long periods of time in the field, the project’s emphasis on an in situ calibration could only be achieved through a conscious effort to minimise the volume of the receiver front-end such that a constant temperature is kept via thermal devices while drawing a sustainable amount of power from the solar panels which are rated to give a maximum of 135 W of power to the front-end. Given this as a primary focus during the design process, nearly all of the components in the front-end were chosen based on a careful balance between their compact size and superior quality.
 
 
@@ -324,7 +324,7 @@ We highlight that Port 0 of the TC-08 lists a “Cold Junction” which is the t
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{temperature}
-    \caption{Receiver component temperature stability recorded by the TC-08 Data Logger. The fluctuations seen within the first two hours of the measurements are from the initiation of the thermoelectric cooler and its attempt to stabilise the front-end internal temperature. We highlight the temperature stability of the individual components after environmental stability is achieved. The plot includes measurements of the 12.5 metre and 24 metre calibration cables before being replaced by the 2 metre and 10 metre cables as detailed in Calibration sources subsection.}
+    \caption{Receiver component temperature stability recorded by the TC-08 Data Logger. The fluctuations seen within the first two hours of the measurements are from mechanical switch stabilisation and the VNA calibration procedure. We highlight the temperature stability of the individual components after environmental stability is achieved. The plot includes measurements of the 12.5 metre and 24 metre calibration cables before being replaced by the 2 metre and 10 metre cables as detailed in Calibration sources subsection.}
     \label{fig:temperature}
 \end{figure}
 
@@ -447,7 +447,7 @@ The finalised construction weighs 29 kilograms and, as stated previously, is all
 
 
 % =========================================
-\subsection{Receiver back-end}
+\subsection{Receiver back-end}\label{sec:backend}
 The receiver back-end houses the components critical for remote communication away from the deployment site, power distribution to the instrument as a whole and measurement subsystems that are less sensitive to environmental effects. 100 metres away from the dipole antenna, the receiver back-end sits below ten MODEL NUMBERS solar panels rated to give SPECIFICATIONS HERE as diagrammed in \cref{fig:system_diagram}. This distance was chosen to avoid radio-frequency reflections off the solar panel and back-end faces as well as serving as a potential central node to be equidistant from future antennas. Under the solar panel construction is a radio-frequency electromagnetic-compatibility (RF-EMC) enclosure custom made by Interference Testing and Consultancy Services Ltd. to mitigate the effects of external RFI on our measurements as well as any potential EMI leakage from our own instrument that may be picked up by nearby experiments. Designs for the RF-EMC enclosure were informed by similar constructions used with the HERA experiment that incorporate considerations of the on-site environment as well as compliance with the EMC requirements of the Karoo Radio Astronomy Reserve. A conceptual diagram of the RF-EMC enclosure is shown in \cref{fig:backend}.
 \begin{figure}
     \centering
@@ -490,7 +490,7 @@ The completed AMP2 and out-of-band injection unit are shown in \cref{fig:amp2} w
 
 % =========================================
 \subsubsection{RF signal chain IV: Simulations}
-Within the design process of the RF signal chain components; the LNA, AMP1 and AMP2, were various stages of optimisation and fine-tuning. Constituent elements within the LNA were first simulated then built and measured with the VNA as shown in \cref{fig:lna_sparams}. This data was then imported back into the simulation to further inform the development of the signal chain as a whole. Simulations were undertaken using the Keysight PathWave RF Synthesis software (formerly known as Genesys) with the in-program optimisation tool used to optimise filter design. Both linear analysis and the Keysight Spectrasys RF System Simulation software were also employed for RF budget simulations with other components simulated using Modelithics’ substrate scalable models. Also included in the simulations were the AMP1 optical transmitter, AMP2 optical receiver and 100 metres of single-mode fibre to replicate the complete RF signal chain as shown in \cref{fig:chain_block_diag}.
+Within the design process of the RF signal chain components; the LNA, AMP1 and AMP2, were various stages of optimisation and fine-tuning. Constituent elements within the LNA were first simulated then built and measured with the PNA-X as shown in \cref{fig:lna_sparams}. This data was then imported back into the simulation to further inform the development of the signal chain as a whole. Simulations were undertaken using the Keysight PathWave RF Synthesis software (formerly known as Genesys) with the in-program optimisation tool used to optimise filter design. Both linear analysis and the Keysight Spectrasys RF System Simulation software were also employed for RF budget simulations with other components simulated using Modelithics’ substrate scalable models. Also included in the simulations were measurements the AMP1 optical transmitter, AMP2 optical receiver and 100 metres of single-mode fibre, characterised by the VNA at different power levels and added to the simulation as a single block as shown in \cref{fig:chain_block_diag} which replicates the complete RF signal chain.
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{chain_block_diag}
@@ -500,7 +500,7 @@ Within the design process of the RF signal chain components; the LNA, AMP1 and A
 The results of the full RF signal chain simulations are shown in \cref{fig:chain_sim} where we highlight the flat noise figure of the network over the observational band.
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{chain_sim}
+    \includegraphics{chain_sim}
     \caption{Simulated radio-frequency response of the REACH end-to-end signal-chain as diagrammed in \cref{fig:chain_block_diag} which includes the LNA, AMP1, AMP2 and RFoF modules. VNA measurements of the LNA have been included in this simulation as well. The shaded region represents the REACH observation band where we see a flat noise figure throughout. Adapted from figure included in REACH NATURE PAPER.}
     \label{fig:chain_sim}
 \end{figure}
@@ -508,17 +508,139 @@ The results of the full RF signal chain simulations are shown in \cref{fig:chain
 
 % =========================================
 \subsubsection{Spectrometer}
+Following the amplification stages is the Sanitas EG \textit{italian} Tile Processor Module (iTPM) shown in \cref{fig:tpm} which serves as an analogue-to-digital converter (ADC) and a high-resolution ultra-wideband digital spectrometer.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{tpm}
+    \caption{The Sanitas EG italian Tile Processor Module for conversion of analogue signals to digital as well as spectral measurements.}
+    \label{fig:tpm}
+\end{figure}
+This device was chosen for its development under the Square Kilometre Array experiment as part of the Low Frequency Aperture Array and has been used for verification of an SKA1 station as well as for back-end signal processing in other experiments. The iTPM's design targeting similar EoR signals granted easy reconfiguration for the REACH experiment through the reuse of auxiliary functions such as control, monitoring and data acquisition. Conversion of the incoming analogue signal to digital is undertaken using sixteen dual-channel Analog Devices 14-bit AD9680 ADCs allowing for multiple data streams from additional proposed antennas as detailed in the FUTURE WORK SECTION. At the time of deployment, two ADC channels were initialised as seen in the \cref{fig:oob_cond} legend for the two antennas expected to be built with the remaining ADC channels disabled to save power. Analogue signals are digitised at 400 MSPS using 16,384 channels at 12.2 kHz per channel. After conversion, spectral measurements are taken by two AMD XILINX UltraScale XCU40 field-programmable gate arrays (FPGAs) each customised to process a single digitised RF signal using a full floating-point fast Fourier transform (FFT), power integrator and polyphase filter bank incorporating 229,376 tap coefficients downloadable to the FPGA to allow the implementation of different weighting functions without recompiling the FPGA firmware. Spectra are accumulated over a number of FFT frames corresponding to an integration time of approximately one second which are then transmitted to a processing server via Ethernet connection where further accumulation can take place on the order of minutes. A typical spectrum obtained from a 20-minute integration on the $50 \Omega$ cold load is shown in \cref{fig:psd_cold}.
+\begin{figure}
+    \centering
+    \includegraphics{psd_cold}
+    \caption{A spectra taken by the iTPM of the ambient temperature $50 \Omega$ load integrated for 20 minutes using the finalised receiver system. A stable power measurement is seen within the REACH observational band (shaded region).}
+    \label{fig:psd_cold}
+\end{figure}
+The 90 dB channel isolation of the spectrometer is expected to be useful for RFI excision. While on-site RFI measurements are still needed to confirm this, data from co-located experiments such as HERA suggest that the current channel isolation is adequate.
 
 
 % =========================================
-\subsubsection{Spectral measurement enclosure (big silver box)}
+\subsubsection{Readout enclosure}
+The readout system comprised of AMP2, the digitiser and spectrometer is housed in a custom-built 6U\footnote{housing height of six standard rack units approximately equal to 266.7 mm} metal enclosure as shown in \cref{fig:readout_enclosure}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{readout_enclosure.jpeg}
+    \caption{The readout enclosure housing the receiver components needed for digitisation and spectral measurements of radio-frequency signals.}
+    \label{fig:readout_enclosure}
+\end{figure}
+Included in the readout enclosure are installations for two USB power meters to independently monitor absolute power levels in the field as previously detailed as well as slots for the out-of-band noise injection module and two independent Amplifier \#2 modules to accommodate two antennas in the field. Semi-rigid RG-405 connect the AMP2 outputs to iTPM channel inputs allocated individual panels seen in \cref{fig:readout_enclosure}. Within the enclosure is an off-the-shelf Peltier heat exchanger, fan and insulation to help regulate the temperature of the readout system, though the back-end components are subject to less scrutiny for operating temperature and output directly to the communication server via RJ45 cabling. Also seen on the front panelling are timing inputs to connect the iTPM to the GPS unit as detailed in the next subsection.
+
+
+% =========================================
+\subsubsection{GPS unit for TPM synchronisation}
+Tile processor modules, such as the one used in our readout system, are comprised of a series of processing units referred to as ‘tiles’ which work in tandem to perform tasks efficiently. For precision applications, synchronisation among tiles is crucial for overall performance and a reference oscillator is needed to provide a common clock signal coordinating the timing of operations across different tiles. As we do not know the environmental effects of the deployment site on the iTPM’s internal oscillator a priori, we use an external Thunderbolt E GPS disciplined clock made by Trimble to ensure iTPM tiles operate in harmony. The Thunderbolt E links to a proprietary GPS antenna through a $75 \Omega$ Belden 1189A cable which allows the module to communicate with the global positioning system to generate a 10 MHz oscillation which is used as a reference to produce a 400 MHz clock to set the ADC sampling rate of 400 MSPS. The module then relays a pulse per second (PPS) signal to synchronise the ADCs to ensure coherence. The GPS disciplined clock was chosen over alternative atom-based frequency standardisation modules to ensure the reference clock accuracy, and in turn the sampling clock accuracy, is isolated from environmental effects, damage during transport, or interference generated by our own receiver components. This would in theory increase accuracy by limiting the propagation of delayed clock signals across tiles (known as skewing), and small variations in clock signal timings (known as jitter). Furthermore, a single reference should be used when using multiple TPMs, as may be the case in the future, to avoid slightly different sampling rates based on individual oscillators. Users of the receiver back-end should note that the 10 MHz GPS signal is independent from the 10 MHz out-of-band noise injection and are urged to be aware of the similarly-named labelling throughout the instrument. The Trimble Thunderbolt E as well as its GPS antenna are shown in \cref{fig:gps}.
+\begin{figure}
+    \centering
+    \centering
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{trimble}
+    \end{subfigure}
+    \hspace{.15\textwidth}
+    \begin{subfigure}{.33\textwidth}
+    \centering
+        \includegraphics[width=\linewidth]{gps_ant}
+    \end{subfigure}
+    \caption{The Trimble clock discipline system consisting of the Thunderbolt E reference signal generator (left) and GPS antenna (right).}
+    \label{fig:gps}
+\end{figure}
+
+
+% =========================================
+\subsubsection{Server \& additional back-end units}
+To permit communication between the instrument and users at Cambridge, a Lenovo M920q Tiny ThinkCentre with a ninthe generation Intel i7 core is included in the receiver back-end as a server. Xubuntu was chosen as the server operating system as the Xfce desktop environment uses fewer system resources in the field while retaining the flexibility and ease of use of Ubuntu\footnote{sorry Arch users…}. The ThinkCentre’s visual output connects to an ATEN CL6700 MW Single Rail LCD Console with built-in monitor keyboard and trackpad\footnote{Also referred to as a ‘KVM’ console for ‘Keyboard, Video \& Mouse’.} for in-person interaction with the machine during installation, triage and site trips when network connection may not be available.
+
+USB links between the server and receiver components is achieved with a StarTech MODEL NUMBER 10-port USB hub with its primary function of receiving the USB over fibre signal from the front-end through the Icron 2244 USB Ranger’s optical-to-USB transducer. As detailed in \cref{sec:frontend}, this allows for the collection of reflection coefficient and temperature data as well as transmission of instructions to the microcontroller and front-end thermal management system. Additional ports on the StarTech USB hub connect the server to the back-end TEC controller for the Peltier device within the readout enclosure as well as a Penn Elcom FT01-Q module consisting of three rack-mounted fans for airflow and cooling within the receiver back-end. Finally, the USB hub connects the server to a Netgear ProSafe M4100-D12G Ethernet managed switch for control of further components via RJ45 connection. Connected to the Ethernet switch is the readout system output, permitting the collection of spectral data from the iTPM as well as connection to a Tripp Lite PDUMH15HVNET Ethernet controlled power distribution unit allowing users to toggle power for individual devices throughout the receiver back-end. The Ethernet switch will also be connected to the satellite uplink intended to be installed after the receiver back-end but not finalised at the time of writing. A second PDU was included in the deployed back-end but is not used. Tables specifying the connections of the USB hub, Ethernet switch and back-end PDU are given in \cref{tab:usb_hub}, \cref{tab:eth_switch} and \cref{tab:backend_pdu} respectively for reference.
+
+
+% =========================================
+\subsubsection{Completed receiver back-end unit}
+The receiver back-end was also finished in December 2022 and is shown in \cref{fig:backend_complete}.
+\begin{figure}
+    \centering
+    \includegraphics[width=.7\textwidth]{backend_complete}
+    \caption{The completed receiver back-end installed in the 36-inch rack in Cambridge (minus the RF-EMC enclosure). The custom readout system weighs in at 15.89 kilograms and is central to the experiment's data acquisition. The Ethernet switch and power distribution units can be seen and are controlled by the Lenovo server. This unit would be common to any additional antennas deployed to the field and is generally less sensitive to environmental effects on site.}
+    \label{fig:backend_complete}
+\end{figure}
+The completed build was too large to be shipped practically and was disassembled into its constituent submodules before being sent to South Africa in February 2023 and reconstructed using a different standardised rack. This finalised construction is intended to serve as a central node for the REACH experiment including any further antennas to be  deployed on site. As much of the receiver back-end consists of off-the-shelf components, we expect serviceability and part replacement to be more straightforward than the front-end. A diagram indicating the back-end submodules is shown in \cref{fig:backend_diag}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{backend_components}
+    \caption{A diagram specifying the placement of the various back-end components for the completed unit in December 2023.}
+    \label{fig:backend_diag}
+\end{figure}
 
 
 % =========================================
 \subsection{Automation}
+The nearest settlement to the REACH deployment site in the Karoo Radio Reserve is Carnarvon, about 90 kilometres away and about seven hour’s drive from the central international airport in Cape Town. Such isolation made the development of a fully autonomous instrument a necessity and procedures were developed to facilitate remote access and communication with the device. In our procedure, the receiver front-end(s) and back-end are controlled and monitored by our management software running on the Lenovo processing server which oversees operation of the instrument such as the configuration of hardware components, data management and directing subroutines. Within our management software, a variety of different communication protocols are used. The Python FPGA Board Interface Layer (PyFABIL) is used to interact with the iTPM while the Standard Commands for Programmable Instruments (SCPI) protocol is used to contact the VNA. Proprietary USB protocols in a Python wrapper are used by the TC-08 temperature sensor with the TEC needing an additional proprietary Windows-based Application Programming Interface which entails a virtual machine running in our Linux desktop environment. Signal path configuration through the microcontroller unit is assigned to Teensy ports accessed through a command line serial interface. A crib sheet useful for the development of automated procedures such as an observation schedule is shown in \cref{fig:controller_pinout} which details the specific devices contactable through individual microcontroller ports.
 \begin{figure}
     \centering
     \includegraphics{controller_pinout}
     \caption{A reference sheet listing the front-end component assignments to the Teensy input/output ports for use in receiver automation. Individual switch positions, power supplies and components can be seen facilitating the creation of new automated routines and on-the-fly system interaction via command line interface. MS‘N’--‘P’ refers to mechanical RF switch number N, port P. ‘MTS’ is the mechanical transfer switch. ‘TEC’ is the thermo-electric cooler module.}
-    \label{fig:enter-label}
+    \label{fig:controller_pinout}
+\end{figure}
+
+Both the calibration and observation procedures are managed by a YAML configured scheduler allowing a remote operator to specify a sequential list of operations including switch toggling, reflection coefficient or spectral measurement, the VNA calibration and hardware initialisation among other low-level commands for debugging purposes. General prescriptions are provided for the two main operations, the first of which is calibration. During calibration, the instrument is instructed to first calibrate the VNA through measurement of the S-O-L standards as detailed in \cref{sec:frontend}. Following this, a measurement of the $50 \Omega$ test load is compared to a saved file from the PNA-X on a frequency-by-frequency basis. If the VNA measurements are within a user-defined tolerance (usually 5\%), the instrument proceeds with receiver calibration measurements; S\textsubscript{11}, spectra and temperatures of the calibration sources along with an S\textsubscript{11} measurement of the LNA. This data is fed into the calibration algorithm to generate calibration coefficients which are verified through comparison with a benchmark set of coefficients to within a user-defined tolerance (e.g. previous calibration coefficients to within 5\%).
+
+Following this is the second primary mode of operation; observation. During observation, power spectral measurements of the sky, reference load and reference noise source as part of the Dicke cycle are performed by the YAML-configured schedule started by a local sidereal time (LST) trigger. Additional measurements of the test load are taken to support ad hoc debugging procedures after which RFI in the data is flagged by a separate algorithm. Calibration coefficients derived in the calibration routine are then applied to the data before being set for data processing. A flowchart depicting the general steps of instrument operation is shown in \cref{fig:obs_flowchart}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{updated_reach_obs_loop}
+    \caption{Typical REACH calibration and observation loop including calibration of the VNA and receiver as well as data acquisition, checks and processing such as RFI flagging. Various stages are verified via algorithm before proceeding to the next process.}
+    \label{fig:obs_flowchart}
+\end{figure}
+
+The receiver back-end transmits integrated spectra as Streaming Protocol for Exchanging Astronomical Data User Datagram Protocol (SPEAD UDP) packets over a 1 GbE network to be received by the associated spectrometer module. A software monitoring daemon collects temperature and power information every minute which is stored in a metric database which are included as metadata with calibration and observation data to inform the calibration procedure. The generated data is then stored as an HDF5 file which includes spectra and reflection coefficients with associated timestamps along with temperature sensor readings. The HDF5 files are self-describing, containing all the information required for future processing without having to refer to observation schedules or similar documentation. The HDF5 files then are transferred off-site to a centralised storage system through a satellite network link installed on-site. An plot of power spectral data taken remotely from Stellenbosch University in South Africa is shown in \cref{fig:remote_data}.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{remote_data}
+    \caption{Passband measurements of several calibration sources taken remotely through an automated procedure. The spectral data shows a clean frequency response with small RFI spikes at lower frequencies which will need to be procees by the separate RFI flagger.}
+    \label{fig:remote_data}
+\end{figure}
+
+
+% =========================================
+\subsection{Deployment}
+Throughout 2022, the deployment site in South Africa was prepared while receiver development took place. Ditches were dug for support posts to be placed for the raised ground plane mesh suspended by guide wires. Due to natural land slope on site, the ground plane was erected between 1 metre and 1.2 metres above ground level to maintain a level construction. Support structures were built and the antenna was then installed as shown in \cref{fig:ground_plane}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{ground_plane}
+    \caption{The REACH dipole antenna on the raised wire mesh ground plane. Support posts of heights varying 20 cm were raised to provide a level ground plane in contrast to the sloped land underneath.}
+    \label{fig:ground_plane}
+\end{figure}
+Upon being shipped from Cambridge, the receiver front and back-ends underwent strict electromagnetic compatibility (EMC) testing at the Karoo radio reserve under the same level of scrutiny as co-located experiments such as HERA. After a final round of testing by the REACH team, the receiver was transported to the deployment site in August 2023 where the back-end components were installed as shown in \cref{fig:deploy_backend}.
+\begin{figure}
+    \centering
+    \includegraphics[width=.8\textwidth]{deploy_backend.jpg}
+    \caption{The receiver back-end and support enclosure underneath the solar panel installation at the deployment site.}
+    \label{fig:deploy_backend}
+\end{figure}
+
+It was understood that at some time between shipment from Cambridge and deployment in the field that both the front-end TEC Peltier device as well as satellite infrastructure had been damaged and no longer functioned. The front-end has been sent back to Stellenbosch University to investigate the fault. Despite this, in-field sky spectra was taken, a screenshot of which can be seen in \cref{fig:onsite_data}.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{onsite_data}
+    \caption{A screenshot from the REACH's first light showing on-site sky data collected by the dipole and taken directly from the back-end KVM console using a mobile phone. The themoelectric cooling unit damaged during transport was not running during this data acquisition. The spectra seen are uncalibrated and underwent no data processing. The shaded region is the FM radio broadcast band for South Africa (87.5 -- 108 MHz).}
+    \label{fig:onsite_data}
+\end{figure}
+As a disclosure, it should be noted that this in-field data was left on a USB flash drive on site and here, a snapshot from the KVM screen taken with a phone camera is used. The image has been enhanced using Microsoft Lens and the GNU Image Manipulation Program (GIMP). While the spectra shown in \cref{fig:onsite_data} is raw, uncalibrated data that hasn't gone through any processing, some important details can be derived from the plot. Firstly, spectra from the antenna is generally higher than the calibrator spectra which serves as a sanity check. Secondly, more than half of the RFI spikes seen in the antenna spectra lie within the FM radio broadcast band for South Africa (87.5 -- 108 MHz) as highlighted in purple, confirming that our apparatus is indeed receiving radio-frequency signals. Further verification can be undertaken by cross checking the precise broadcast frequencies of local radio stations. Finally, we can also see that the antenna spectra peaks at low frequencies and decays off, approximating the power law shape of galactic foregrounds expected from sky measurements at these frequencies. We therefore conclude that these spectra are encouraging as an initial proof-of-concept measurement.
+
+Furthermore, it has also been seen that, due to the changing weather conditions on site, the $20 \times 20$ metre ground plane\footnote{with 6 metre serrations} sags due to insufficient support. Provisional supports were made with scrap wood as seen in \cref{fig:ground_plane} while a more permanent method of support is currently deployed. With the approximate completion of the ground plane, installation of the dipole antenna, solar panels and receiver back-end, the REACH site can be seen through satellite imaging at the longitude-latitude coordinates 30\textdegree50'19.4"S 21\textdegree22'29.8"E as shown in \cref{fig:sat_image}.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{sat_image}
+    \caption{A satellite image from Google Earth showing the REACH deployment site. The 20 metre wide ground plane can be seen with the antenna installed at its centre. To the top right of the ground plane is the back-end node covered by the solar panel installation. The bottom left shows two vehicles and a tent with a dirt road exiting the site on the left along the ground plane.}
+    \label{fig:sat_image}
 \end{figure}
