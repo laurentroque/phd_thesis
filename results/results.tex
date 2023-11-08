@@ -240,3 +240,59 @@ We consider the above to be the extent of reasonable adjustments to the physical
 
 \section{Additional models for incorporation}
 In our experimentation with modifications of our algorithm, we decided on three additional models to be incorporated into our calibration procedure. While these models do not result in immediate practical benefits to our experimental results with regard to the sinusoidal systematics presented above, they serve to reinforce the theoretical foundation on which our algorithm is built. These models are explained below.
+
+\subsection{Fixture compensation to improve S-parameter measurements}\label{sec:tparameters}
+At our desired levels of precision, RF system design must minimise the number of reference planes within the instrument. Each additional reference plane will have its own path-specific signal delays and reflections which slightly alter the data with respect to a measurement device such as the VNA. Preceding the full calibration of the receiver, the VNA is initially calibrated via the SOL standards with respect to the MS2 input reference plane as shown in \cref{fig:overview}. Following this, all further reflection measurements of the calibration sources and LNA are taken with respect to a reference plane at the inputs of the MTS switch, represented by the red dashed lines in \cref{fig:overview}\footnote{We take the mechanical switches MS1, MS3 and MS4 to be lossless while assuming the path through the 2-port MTS is non-negligible.}.
+
+Omitting any redesign of the front-end, we may attempt to mitigate the effects of the path length through the MTS switch through the techniques of fixture compensation. A particularly accurate method of fixture compensation is the use of scattering transfer parameters (T-parameters), also referred to as ABCD parameters\footnote{An alternative convention known as chain scattering parameters are also referred to as ‘T-parameters’ and care should be taken to ensure that one’s calculations are consistent to avoid errors} \citep{pozar}. Modelling the MTS+source combination as a cascaded network at the MS2 input reference plane, we may use T-parameters to mathematically de-embed fixtures such as the MTS and remove their effects on the data. For a 2-port network such as the path through the MTS switch, the relation between S-parameters and T-parameters under the scattering transfer convention is defined as
+\begin{equation}
+    T = \begin{bmatrix}
+        T_{11} & T_{12} \\
+        T_{21} & T_{22}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \frac{S_{12}S_{21}-S_{11}S_{22}}{S_{21}} & \frac{S_{11}}{S_{21}} \\
+        \frac{-S_{22}}{S_{21}} & \frac{1}{S_{21}}
+    \end{bmatrix},
+    \label{eqn:tparams}
+\end{equation}
+where the S-parameters in the above matrix are reflection measurements of the offending paths through the MTS switch (e.g. the MTS-J1$\rightarrow$MTS-J2 path for calibration sources and MTS-J3$\rightarrow$MTS-J4 for the LNA). In the current analysis, measurements of the MTS switch were performed in the laboratory using the Keysight N5247A PNA-X. While this procedure contradicts our philosophy of an all-in-field calibration system, we believe it strengthens the foundation of our overall technique and future work will  be undertaken on a system design that either avoids multiple reference planes or facilitates in situ 2-port measurements of the MTS switch.
+
+During a reflection measurement, all the VNA sees is a device under test (DUT) which in reality consists of a calibration source connected to the MTS as shown in \cref{fig:cascaded_network_diagram}. 
+\begin{figure}
+    \centering
+    \includegraphics[width=.9\textwidth]{cascaded_network_diagram}
+    \caption{From the perspective of the VNA, a reflection measurement is taken of a single device under test (D.U.T.) consisting of the MTS switch connected to a source. The reflection coefficient measured by the VNA, $\G{\mathrm{D.U.T.}}$, is altered by the path through the MTS switch. The desired reading is $\G{\mathrm{source}}$ which needs to be extracted from the D.U.T. measurement.}
+    \label{fig:cascaded_network_diagram}
+\end{figure}
+The traversing and reflected waves are related by
+\begin{equation}
+    \begin{bmatrix}
+        a_1 \\ b_1
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        T_{11} & T{12} \\
+        T_{21} & T{22}
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_2 \\ b_2
+    \end{bmatrix},
+\end{equation}
+where $\G{\mathrm{source}} = \frac{b_2}{a_2}$ and $\G{\mathrm{D.U.T.}} = \frac{b_1}{a_1}$. Wanting the reflection coefficient of the source, we expand as a system of equations that can be solved yielding
+\begin{equation}
+    \G{source} = \frac{ \G{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} }{ S_{12}^{\mathrm{MTS}} S_{21}^{\mathrm{MTS}} + S_{11}^{\mathrm{MTS}} \left( \G{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} \right) },
+\end{equation}
+where the S-parameters are measurements of the MTS-J1$\rightarrow$MTS-J2 paths for corrections regarding sources and MTS-J3$\rightarrow$MTS-J4 for corrections of the LNA reflection coefficient. These corrections are applied to all S-parameter measureents.
+
+Using simulations of a similar cascaded network made with Keysight’s PathWave RF Synthesis software, we can confirm that this method of fixture compensation retrieves the source reflection coefficient to within six decimal places as shown in \cref{fig:tparam}.
+\begin{figure}
+    \centering
+    \includegraphics[width=.7\textwidth]{tparam}
+    \caption{A plot comparing a simulated load and a model derived through fixture compensation. A load+cable configuration was simulated in the PathWave RF Synthesis software which was measured using the tools within the program. Measurements were then taken of the simulated cable on its own which were used to derive T-parameters and de-embed the cable from the fixture. The resulting model for the simulated load is shown in purple and plotted against the in-program measurement of the load shown in orange. We see that the model and measurement agree to within six decimal places. S-parameter magnitudes are shown on a linear scale and S-parameter measurements within the software were noiseless.}
+    \label{fig:tparam}
+\end{figure}
+
+
+adding the path back in for the LNA measurements...
