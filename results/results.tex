@@ -63,7 +63,7 @@ We start by demonstrating the importance of correlation between noise wave param
 
 % =========================================
 \subsection{Correlation between noise wave parameters}\label{sec:correlation}
-The first major feature of our Bayesian pipeline is the consideration of possible correlation between noise wave parameters when deriving their values. This is best demonstrated when noise is introduced in an idealised way as to retain a form matching the Gaussian form of our mathematical model. To do this, empirical models of power spectral densities are calculated from \cref{eqn:pant,eqn:pl,eqn:pns} using measurements of $\G{rec}$, $\Ga$ and $\T{cal}$ for the cold and hot loads, as well as a set of realistic fiducial noise wave parameters. Gaussian noise of one unit variation is then added to the $\T{cal}$ measurements after the calculation to conserve its Gaussian form. This data is submitted to our algorithm and the resulting posterior distributions for coefficients of the polynomial noise wave parameters are compared to the fiducial values.
+The first major feature of our Bayesian pipeline is the consideration of possible correlation between noise wave parameters when deriving their values. This is best demonstrated when noise is introduced in an idealised way as to retain a form matching the Gaussian form of our mathematical model. To do this, empirical models of power spectral densities are calculated from \cref{eqn:pant,eqn:pl,eqn:pns} using measurements of $\Gam{rec}$, $\Ga$ and $\T{cal}$ for the cold and hot loads, as well as a set of realistic fiducial noise wave parameters. Gaussian noise of one unit variation is then added to the $\T{cal}$ measurements after the calculation to conserve its Gaussian form. This data is submitted to our algorithm and the resulting posterior distributions for coefficients of the polynomial noise wave parameters are compared to the fiducial values.
 
 Such posterior distributions can be seen in \cref{fig:goodplot} showing the results of models using only the cold load (grey posterior), only the hot load (red posterior) and using both loads in tandem (blue posterior). For these calculations we chose a set of model noise wave parameters as constants across the frequency band;
 \begin{align*}
@@ -121,7 +121,7 @@ where $x$ is our normalised frequency. Gaussian noise of one unit variation is a
 
 % =========================================
 \subsection{Application with realistic noise}\label{sec:sim_results}
-To demonstrate the robustness of our pipeline, we conducted self-consistency checks using empirically modelled data with a more complicated noise model. This data was generated using reflection coefficients of eight calibrators and the receiver measured in the laboratory. These reflection coefficients were then smoothed using a cubic smoothing spline \citep{spline} in order to maintain their approximate shape over frequency. The same second-order noise wave parameters detailed in \cref{sec:opt} are used with the reflection coefficients to generate our model power spectral densities. Following this, we added of order 1\% Gaussian noise independently to the smoothed $\G{rec}$ and $\Ga$ as well as $\psd{cal}$ to more accurately represent the instrument noise from measurement equipment such as vector network analysers. No noise was added to the calibrator input temperatures. This results in a model that does not match the Gaussian form of our mathematical model as in the previous sections and thus does not demonstrate the features of our pipeline as explicitly, but is more representative of data set expected from measurements in the field. Data for the receiver and the cold load generated using this noise model are shown in \cref{fig:calQualities}.
+To demonstrate the robustness of our pipeline, we conducted self-consistency checks using empirically modelled data with a more complicated noise model. This data was generated using reflection coefficients of eight calibrators and the receiver measured in the laboratory. These reflection coefficients were then smoothed using a cubic smoothing spline \citep{spline} in order to maintain their approximate shape over frequency. The same second-order noise wave parameters detailed in \cref{sec:opt} are used with the reflection coefficients to generate our model power spectral densities. Following this, we added of order 1\% Gaussian noise independently to the smoothed $\Gam{rec}$ and $\Ga$ as well as $\psd{cal}$ to more accurately represent the instrument noise from measurement equipment such as vector network analysers. No noise was added to the calibrator input temperatures. This results in a model that does not match the Gaussian form of our mathematical model as in the previous sections and thus does not demonstrate the features of our pipeline as explicitly, but is more representative of data set expected from measurements in the field. Data for the receiver and the cold load generated using this noise model are shown in \cref{fig:calQualities}.
 \begin{figure}
     \centering
     \includegraphics[width=.5\textwidth]{calQualities}
@@ -263,7 +263,7 @@ During a reflection measurement, all the VNA sees is a device under test (DUT) w
 \begin{figure}
     \centering
     \includegraphics[width=.9\textwidth]{cascaded_network_diagram}
-    \caption{From the perspective of the VNA, a reflection measurement is taken of a single device under test (D.U.T.) consisting of the MTS switch connected to a source. The reflection coefficient measured by the VNA, $\G{\mathrm{D.U.T.}}$, is altered by the path through the MTS switch. The desired reading is $\G{\mathrm{source}}$ which needs to be extracted from the D.U.T. measurement.}
+    \caption{From the perspective of the VNA, a reflection measurement is taken of a single device under test (D.U.T.) consisting of the MTS switch connected to a source. The reflection coefficient measured by the VNA, $\Gam{\mathrm{D.U.T.}}$, is altered by the path through the MTS switch. The desired reading is $\Gam{\mathrm{source}}$ which needs to be extracted from the D.U.T. measurement.}
     \label{fig:cascaded_network_diagram}
 \end{figure}
 The traversing and reflected waves are related by
@@ -280,9 +280,9 @@ The traversing and reflected waves are related by
         a_2 \\ b_2
     \end{bmatrix},
 \end{equation}
-where $\G{\mathrm{source}} = \frac{b_2}{a_2}$ and $\G{\mathrm{D.U.T.}} = \frac{b_1}{a_1}$. Wanting the reflection coefficient of the source, we expand as a system of equations that can be solved yielding
+where $\Gam{\mathrm{source}} = \frac{b_2}{a_2}$ and $\Gam{\mathrm{D.U.T.}} = \frac{b_1}{a_1}$. Wanting the reflection coefficient of the source, we expand as a system of equations that can be solved yielding
 \begin{equation}
-    \G{source} = \frac{ \G{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} }{ S_{12}^{\mathrm{MTS}} S_{21}^{\mathrm{MTS}} + S_{11}^{\mathrm{MTS}} \left( \G{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} \right) },
+    \Gam{source} = \frac{ \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} }{ S_{12}^{\mathrm{MTS}} S_{21}^{\mathrm{MTS}} + S_{11}^{\mathrm{MTS}} \left( \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} \right) },
 \end{equation}
 where the S-parameters are measurements of the MTS-J1$\rightarrow$MTS-J2 paths for corrections regarding sources and MTS-J3$\rightarrow$MTS-J4 for corrections of the LNA reflection coefficient. These corrections are applied to all S-parameter measurements.
 

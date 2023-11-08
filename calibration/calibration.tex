@@ -47,32 +47,32 @@ During a calibration measurement, power spectral densities (PSDs) are taken of e
 where $\T{L}$ and $\T{NS}$ are assumptions for the noise temperature of the internal reference load and excess noise temperature of the internal noise source above ambient, respectively. This comparison of sequential power measurements serves as the `relative' calibration which removes time-dependent variations in system gain emerging from individual components or technical capabilities of the instrument \citep{edgesCal}. These PSD measurements can be expanded in terms of specific response contributions with the input power spectra being
 \begin{multline}
   \label{eqn:pant}
-  \psd{cal} = g_{\mathrm{sys}} \Bigg[ \T{cal}\left(1-|\Ga|^2\right)\left|\frac{\sqrt{1 - |\G{rec}|^2}}{1-\Ga\G{rec}}\right|^2 + \T{unc}|\Ga|^2\left|\frac{\sqrt{1 - |\G{rec}|^2}}{1-\Ga\G{rec}}\right|^2 \\
-  + \T{cos}\operatorname{Re}\left(\Ga\frac{\sqrt{1 - |\G{rec}|^2}}{1-\Ga\G{rec}}\right) + \T{sin}\operatorname{Im}\left(\Ga\frac{\sqrt{1 - |\G{rec}|^2}}{1-\Ga\G{rec}}\right) 
+  \psd{cal} = g_{\mathrm{sys}} \Bigg[ \T{cal}\left(1-|\Ga|^2\right)\left|\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right|^2 + \T{unc}|\Ga|^2\left|\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right|^2 \\
+  + \T{cos}\operatorname{Re}\left(\Ga\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right) + \T{sin}\operatorname{Im}\left(\Ga\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right) 
   + T_0 \Bigg],
 \end{multline}
-where $\Ga$ and $\G{rec}$ are the measured reflection coefficients of the device connected to the receiver input and receiver itself respectively. $g_{\mathrm{sys}}$ is the system gain referenced to the receiver input and $\T{cal}$ is our calibrated input temperature. $\T{unc}$, $\T{cos}$, and $\T{sin}$ are the ‘noise wave parameters’ introduced by \citet{meys} to calibrate the instrument \footnote{equivalent to $\T{a}$ $\T{b}$, and $\T{c}$ in his notation}. $\T{unc}$ represents the portion of noise reflected by the antenna that is uncorrelated with the output noise of the LNA while $\T{cos}$ and $\T{sin}$ represent the portions correlated with LNA noise \citep{edgesCal, rogersCal}. The phase in which these reflected noise waves re-enter the receiver is described by the Re() and Im() arguments of \cref{eqn:pant}\footnote{These arguments are equivalent to the $\alpha$ term in the EDGES notation \cite{edgesCal} and analogous to $\phi$ in the Meys formulation \citep{meys}}. In the EDGES experiment, the noise wave parameter quantities are modelled using seven-term polynomials in frequency.
+where $\Ga$ and $\Gam{rec}$ are the measured reflection coefficients of the device connected to the receiver input and receiver itself respectively. $g_{\mathrm{sys}}$ is the system gain referenced to the receiver input and $\T{cal}$ is our calibrated input temperature. $\T{unc}$, $\T{cos}$, and $\T{sin}$ are the ‘noise wave parameters’ introduced by \citet{meys} to calibrate the instrument \footnote{equivalent to $\T{a}$ $\T{b}$, and $\T{c}$ in his notation}. $\T{unc}$ represents the portion of noise reflected by the antenna that is uncorrelated with the output noise of the LNA while $\T{cos}$ and $\T{sin}$ represent the portions correlated with LNA noise \citep{edgesCal, rogersCal}. The phase in which these reflected noise waves re-enter the receiver is described by the Re() and Im() arguments of \cref{eqn:pant}\footnote{These arguments are equivalent to the $\alpha$ term in the EDGES notation \cite{edgesCal} and analogous to $\phi$ in the Meys formulation \citep{meys}}. In the EDGES experiment, the noise wave parameter quantities are modelled using seven-term polynomials in frequency.
 
 The PSDs for the internal reference load and noise source can similarly be expressed as in \cref{eqn:pant}. However, since the reflection coefficients of the internal references are assumed to be small, we approximate them as zeros in order to simplify the equations
 \begin{equation}
   \label{eqn:pl}
-  \psd{L} = g_{\mathrm{sys}}^*[\T{L}\left(1-|\G{rec}|^2\right)+T_{0}^*],
+  \psd{L} = g_{\mathrm{sys}}^*[\T{L}\left(1-|\Gam{rec}|^2\right)+T_{0}^*],
 \end{equation}
 \begin{equation}
   \label{eqn:pns}
-  \psd{NS} = g_{\mathrm{sys}}^*[\left(\T{L}+\T{NS}\right)\left(1-|\G{rec}|^2\right)+T_{0}^*].
+  \psd{NS} = g_{\mathrm{sys}}^*[\left(\T{L}+\T{NS}\right)\left(1-|\Gam{rec}|^2\right)+T_{0}^*].
 \end{equation}
 As shown in \cref{fig:dicke}, the internal references may be on a separate reference plane than the receiver input, resulting in a system gain $g_{\mathrm{sys}}^*$ and a noise offset $T_{0}^*$ different from those defined in \cref{eqn:pant}. This effect is taken into account by two additional scale and offset parameters, $C_1$ and $C_2$, introduced by EDGES \citep{edgesCal}.
 
 Since $C_1$ and $C_2$ also correct for first-order assumptions in the noise temperatures of the internal reference load and noise source, we have chosen to absorb these terms into $\T{L}$ and $\T{NS}$ in our analysis. This adjustment allows all calibration parameters, $\T{unc}$, $\T{cos}$, $\T{sin}$, and the ‘effective’ $\T{NS}$ and $\T{L}$, to be solved for in units of kelvin, facilitating a joint solution of parameters. Expanding \cref{eqn:tantstar} using \cref{eqn:pant,eqn:pl,eqn:pns} yields a linear identity providing a relationship between the uncalibrated input temperature and a final calibrated temperature of any device connected to the receiver input
 \begin{multline}
   \label{eqn:caleqn}
-  \T{NS}\left( \frac{\psd{cal} - \psd{L}}{\psd{NS} - \psd{L}} \right) + \T{L} = \T{cal}\left[ \frac{1-|\Ga|^2}{|1-\Ga\G{rec}|^2} \right]
-  + \T{unc}\left[ \frac{|\Ga|^2}{|1-\Ga\G{rec}|^2} \right] \\
-  + \T{cos}\left[ \frac{\operatorname{Re}\left(\frac{\Ga}{1-\Ga\G{rec}}\right)}{\sqrt{1-|\G{rec}|^2}} \right]
-  + \T{sin}\left[ \frac{\operatorname{Im}\left(\frac{\Ga}{1-\Ga\G{rec}}\right)}{\sqrt{1-|\G{rec}|^2}} \right],
+  \T{NS}\left( \frac{\psd{cal} - \psd{L}}{\psd{NS} - \psd{L}} \right) + \T{L} = \T{cal}\left[ \frac{1-|\Ga|^2}{|1-\Ga\Gam{rec}|^2} \right]
+  + \T{unc}\left[ \frac{|\Ga|^2}{|1-\Ga\Gam{rec}|^2} \right] \\
+  + \T{cos}\left[ \frac{\operatorname{Re}\left(\frac{\Ga}{1-\Ga\Gam{rec}}\right)}{\sqrt{1-|\Gam{rec}|^2}} \right]
+  + \T{sin}\left[ \frac{\operatorname{Im}\left(\frac{\Ga}{1-\Ga\Gam{rec}}\right)}{\sqrt{1-|\Gam{rec}|^2}} \right],
 \end{multline}
-where all parameters are frequency-dependent though not explicitly shown for simplicity of notation. During a calibration procedure, $\T{cal}$, $\Ga$ and $\G{rec}$ are measured along with the PSDs while $g_{\mathrm{sys}}$ and $\T{0}$ are calibrated out via the `relative' calibration procedure inherent to \cref{eqn:tantstar}. As stated in \cref{sec:frontend}, the $50 \Omega$ cold and hot loads exhibit the main temperature references needed for $\T{L}$ and $\T{NS}$ while delayed reflection in the calibration cables allow for the derivation of $\T{unc}$, $\T{cos}$ and $\T{sin}$ by simulating an antenna observing an ambient temperature sky \citep{rogersCal}.
+where all parameters are frequency-dependent though not explicitly shown for simplicity of notation. During a calibration procedure, $\T{cal}$, $\Ga$ and $\Gam{rec}$ are measured along with the PSDs while $g_{\mathrm{sys}}$ and $\T{0}$ are calibrated out via the `relative' calibration procedure inherent to \cref{eqn:tantstar}. As stated in \cref{sec:frontend}, the $50 \Omega$ cold and hot loads exhibit the main temperature references needed for $\T{L}$ and $\T{NS}$ while delayed reflection in the calibration cables allow for the derivation of $\T{unc}$, $\T{cos}$ and $\T{sin}$ by simulating an antenna observing an ambient temperature sky \citep{rogersCal}.
 
 
 % =========================================
