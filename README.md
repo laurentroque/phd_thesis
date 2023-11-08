@@ -452,3 +452,7 @@ This is normal for a book class. Usually, a new chapter in a book always starts 
 #### _W7_: My references aren't listed in the ordered in which I cite them
 
 This is controlled by the bibliography style. Please use `\bibliographystyle{unsrt}` in `thesis.tex` instead of `apalike`. This applicable only for numerically sorted references.
+
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.8 -dNOPAUSE -dQUIET -dBATCH -dPrinted=false -dAutoRotatePages=/None -sOutputFile=thesis_compressed.pdf thesis.pdf
+
