@@ -211,6 +211,7 @@ Here $\sigma_{p}$ is the level of noise which we expect to find which we apprais
 \end{equation}
 which has dimensions of normalised temperature. We believe this reformulation to be robust and verified that the expected results are recovered using simulated data.
 
+% =========================================
 \subsubsection{Mock antenna results 2}
 As we continued to construct the receiver, many components required replacement including the TEC power supply, VNA, iTPM and the USB-to-fibre converter. While we do not expect these replacements to affect our calibration results, we report them here for the sake of documentation or consideration in future analyses. To better assess the capabilities of our pipeline, a mock antenna was built to resemble the $S_{11}$ of the deployed antenna dipole based on simulations provided by CITE JOHN CUMNER. This mock antenna was made by soldering a $90 \Omega$ load to the end of a 2 metre coaxial cable, providing an $S_{11}$ varying between -11 dB and -14 dB as shown in \cref{fig:s11_meas}. With this configuration, 16-minute integrations were performed on eight calibration sources; the ambient and heated $50 \Omega$ loads, shorted and open cables, $25 \Omega$ and $100 \Omega$ resistors, and the 12 metre calibration cable terminated at $27 \Omega$ and $91 \Omega$. The calibration solution applied to our mock antenna is shown in \cref{fig:reach_results_2} and yields a $\sigma = 1.464$ K.
 \begin{figure}
@@ -221,6 +222,7 @@ As we continued to construct the receiver, many components required replacement 
 \end{figure}
 The calibration results are seen to have a clear sinusoidal systematic which we attribute to some physical phenomena not being accounted for or incorporated into our pipeline.
 
+% =========================================
 \section{Responses}
 The sinusoidal structure seen in both \cref{fig:hera_results} and \cref{fig:reach_results_2} indicate systematics needing to be addressed. The two typical avenues of approach are to; a) find and attend to the physical source of the systematic (loose wire, etc) and b) incorporate better numerical models into our algorithm to incorporate the information not captured presently. For the engineer, the former is often attempted first, and for the statistician, the latter. One may argue that a perfect calibration algorithm should account for any systematic, which perhaps is true. In practice however, incorporating a myriad of models for every potential loose wire at every connection or the impedance changes of every component with every degree of temperature increase proves difficult. The approach of identifying physical faults with the instrument tends to yield more immediate results as well, as shown in \cref{fig:lna_switched_reach_result} where the front-end low noise amplifier was replaced with a new construction of identical specifications.
 \begin{figure}
@@ -238,9 +240,11 @@ We then proceeded to replace every individual component within the receiver incl
 
 We consider the above to be the extent of reasonable adjustments to the physical machine and continue on to the statistician’s approach to systematics--adjustments to our numerical algorithm. We started with reformulating of our priors similar to the procedure of \cref{eqn:alpha_reform} through \cref{eqn:sigma_reform} under various assumptions such as keeping the priors wide or constraining them based off of noise wave parameter values published by EDGES as well as from our own experience. We however considered equations presented in this chapter to be a good compromise between the best calibration accuracy and the wide priors expected of a comparable frequentist approach. We also experimented with the incorporation of additional corrective factors to compensate unaccounted gain contributions as well as offset factors to correct for minute differences in the measurement reference planes. We improved the gradient descent algorithm that optimises the noise wave parameter polynomial order by refactoring the code to avoid getting trapped at local minima. Furthermore, we tried smoothing of the data as well as up-sampling and down-sampling of the data.
 
+% =========================================
 \section{Additional models for incorporation}
 In our experimentation with modifications of our algorithm, we decided on three additional models to be incorporated into our calibration procedure. While these models do not result in immediate practical benefits to our experimental results with regard to the sinusoidal systematics presented above, they serve to reinforce the theoretical foundation on which our algorithm is built. These models are explained below.
 
+% =========================================
 \subsection{Fixture compensation to improve S-parameter measurements}\label{sec:tparameters}
 At our desired levels of precision, RF system design must minimise the number of reference planes within the instrument. Each additional reference plane will have its own path-specific signal delays and reflections which slightly alter the data with respect to a measurement device such as the VNA. Preceding the full calibration of the receiver, the VNA is initially calibrated via the SOL standards with respect to the MS2 input reference plane as shown in \cref{fig:overview}. Following this, all further reflection measurements of the calibration sources and LNA are taken with respect to a reference plane at the inputs of the MTS switch, represented by the red dashed lines in \cref{fig:overview}\footnote{We take the mechanical switches MS1, MS3 and MS4 to be lossless while assuming the path through the 2-port MTS is non-negligible.}.
 
@@ -273,8 +277,8 @@ The traversing and reflected waves are related by
     \end{bmatrix}
     =
     \begin{bmatrix}
-        T_{11} & T{12} \\
-        T_{21} & T{22}
+        T_{11} & T_{12} \\
+        T_{21} & T_{22}
     \end{bmatrix}
     \begin{bmatrix}
         a_2 \\ b_2
@@ -300,16 +304,34 @@ Following the above corrections to the reflection measurements made by the VNA, 
 \end{equation}
 where the S-parameters correspond to measurements of the two-port network defined by the MTS-J2$\rightarrow$J4 inputs.
 
-\subsection{Temperature gradients across calibration cables}
+% =========================================
+\subsection{Temperature gradients across calibration cables}\label{sec:cable_gradient}
 As shown in THE CALIBRATION SECTION, the accurate readings of the physical temperatures from our calibration sources are crucial for optimal performance. These are typically measured by the TC-08 thermocouples throughout an observation and are assumed to be spectrally flat. This is, however, not entirely accurate as many of our calibration sources are constructed from a resistor terminating a cable which will exhibit a temperature gradient across the cable’s length similar to the heated $50 \Omega$ load with the resistor heated to 370 K and the connecting end of the device at ambient temperature as shown in HEATED LOAD DIAGRAM. In the case of our calibration cables, a short (2 metre) and long (10 metre) MAKE SURE THESE LENGTHS MATCH THE ONES QUOTED IN THE INSTRUMENTAL CHAPTER are connected the various resistor values by the 12 V MS3 and MS4 switches as represented in \cref{fig:overview}. These powered switches are seen to produce a $\sim$ 3 degree difference between the cable and the resistors resulting in a minor temperature gradient which needs to be accounted for in a manner similar to the heated load as discussed in CALIBRATION MATHS CHAPTER.
 
 We start by calculating the the realised gain of each source path which describes the actual gain that a device is able to achieve taking into account factors such as loss and mismatch
 \begin{equation}
     G = \frac{ |S_{21}|^2 \left( 1 - |\Gam{\mathrm{R}}|^2 \right) }{ |1 - S_{11} \Gam{\mathrm{R}}|^2 \left( 1 - |\Gam{\mathrm{src}}|^2 \right) },
+    \label{eqn:av_gain}
 \end{equation}
 where $S_{11}$ and $S_{22}$ are the forward S-parameters of the calibration cable in question. The reflection coefficient is also measured of the cable+switch+load construction and of the terminating resistor represented as $\Gam{\mathrm{src}}$ and $\Gam{\mathrm{R}}$ respectively with the former being the S-parameter data from our original equations in CALIBRATION MATS SECTION. Using the realised gain, we can model the effective temperature of each source as
 \begin{equation}
     T_{\mathrm{src}} = GT_{\mathrm{R}} + (1 - G)T_{\mathrm{cab}},
+    \label{eqn:temp_correction}
 \end{equation}
 where $T_{\mathrm{R}}$ and $T_{\mathrm{cab}}$ are the temperatures of the resistive load and cable measured by thermocouple during normal operation. 
 
+% =========================================
+\subsection{Temperature gradients across the antenna}\label{sec:ant_corrections}
+For the majority of laboratory measurements, training data from calibration sources is used to derive a calibration solution for the current receiver state which is applied to mock antenna data yielding a calibrated antenna temperature. This mock antenna at the MTS-J2 reference plane, is made from a load-terminated 1 metre cable which also exhibits temperature discontinuities between the load, cable and connection to the MTS input. Following the same principles as \cref{sec:cable_gradient}, we compute the available gain using \cref{eqn:av_gain} and reflection measurements of the antenna construction as well as its constituent cable and load. For our mock antenna, we want $\T{sky}$ which will be the temperature at the terminating load. Rearranging \cref{eqn:temp_correction} for $\T{R}$
+\begin{equation}
+    \T{ATL} = \frac{1}{G} \left( \T{ant} + \left( G - 1 \right) \T{cab} \right),
+\end{equation}
+where $\T{ATL}$ is the temperature at the antenna’s terminating load, $\T{ant}$ is the temperature of the mock antenna as measured at the receiver input and $\T{cab}$ is the temperature of the cable within the mock antenna construction. $\T{cab}$ can be approximated with the following
+\begin{equation}
+    \T{cab} = \frac{1}{L_{\mathrm{tot}}} \left( \T{int}L_{\mathrm{int}} + \T{ext}L_{\mathrm{ext}} \right),
+\end{equation}
+where $\T{int}$ and $\T{ext}$ represent the the internal and external cable temperatures while $L_{\mathrm{int}}$ and $L_{\mathrm{ext}}$ represent the internal and external cable length. $L_{\mathrm{tot}}$ is the total cable length. For our mock antenna, $L_{\mathrm{ext}}$ is 100 cm and $L_{\mathrm{int}}$ is 28 cm.
+
+During deployment, these corrections may need to be refined to accommodate the response of additional components such as a balun. If the radiation efficiency of the antenna = 1 (i.e. $\T{ant}=\T{sky}$), the balun and the antenna feed cable will form two RF networks between the antenna and our reference plane, both of which will be cooler than the hot sky at REACH frequencies. The response of these devices have the potential to impose frequency structure on the calibrated antenna temperature unless similar corrections are applied.
+
+% =========================================
