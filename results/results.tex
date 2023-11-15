@@ -223,7 +223,7 @@ As we continued to construct the receiver, many components required replacement 
 The calibration results are seen to have a clear sinusoidal systematic which we attribute to some physical phenomena not being accounted for or incorporated into our pipeline.
 
 % =========================================
-\section{Responses}
+\section{Responses}\label{sec:responses}
 The sinusoidal structure seen in both \cref{fig:hera_results} and \cref{fig:reach_results_2} indicate systematics needing to be addressed. The two typical avenues of approach are to; a) find and attend to the physical source of the systematic (loose wire, etc) and b) incorporate better numerical models into our algorithm to incorporate the information not captured presently. For the engineer, the former is often attempted first, and for the statistician, the latter. One may argue that a perfect calibration algorithm should account for any systematic, which perhaps is true. In practice however, incorporating a myriad of models for every potential loose wire at every connection or the impedance changes of every component with every degree of temperature increase proves difficult. The approach of identifying physical faults with the instrument tends to yield more immediate results as well, as shown in \cref{fig:lna_switched_reach_result} where the front-end low noise amplifier was replaced with a new construction of identical specifications.
 \begin{figure}
     \centering
@@ -335,3 +335,20 @@ where $\T{int}$ and $\T{ext}$ represent the the internal and external cable temp
 During deployment, these corrections may need to be refined to accommodate the response of additional components such as a balun. If the radiation efficiency of the antenna = 1 (i.e. $\T{ant}=\T{sky}$), the balun and the antenna feed cable will form two RF networks between the antenna and our reference plane, both of which will be cooler than the hot sky at REACH frequencies. The response of these devices have the potential to impose frequency structure on the calibrated antenna temperature unless similar corrections are applied.
 
 % =========================================
+\section{Comparison with least squares algorithm}\label{sec:matlab_results}
+After evaluating the results from \cref{sec:hera_results} through \cref{sec:responses} we wanted to determine whether our Bayesian algorithm was the limiting factor in achieving a calibration accuracy on the scale of tens of millikelvin. As a sanity check, an independent pipeline was written in MATLAB following the least-squares solution to a system of linear equations as prescribed in \citet{edgesCal}. A dataset was taken of 20 minute integrations on ten calibrators; the heated and ambient temperature $50 \Omega$ loads, the $25 \Omega$ and $100 \Omega$ loads, the open and shorted 25 metre cable, and the 12 metre cable terminated with $27 \Omega$, $91 \Omega$, $36 \Omega$ and $69 \Omega$ resistors. The calculated order-5 noise wave parameters were applied to data of the lab-based mock antenna as described in the previous sections with no corrections applied such as those discussed in \cref{sec:tparameters}, \cref{sec:cable_gradient}, and \cref{sec:ant_corrections}. The resulting calibrated antenna temperature is shown in \cref{fig:raw_singular_nima} where we can see structure throughout the observation band. Significant RFI is seen at 78 Mhz which was excised before calculating an RMSE from the average calibrated antenna temperature yielding an accuracy of 760 mK. Upon applying the S-parameter, cable temperature gradient, and antenna temperature corrections, the accuracy increases, giving an RMSE of 518 mK as shown in \cref{fig:corrected_singular_nima}
+\begin{figure}
+    \centering
+    \includegraphics[width=.8\textwidth]{raw_matlab_solution}
+    \caption{Calibrated temperature of the laboratory-based mock antenna using data from ten calibrators integrated for twenty minutes. No S-parameter, cable temperature gradient or antenna temperature corrections were applied to this solution. The RFI at 78 MHz was excised before calculation of the RMSE relative to the solution average yielding a calibration accuracy of 760 mK. It is evident that without the corrections reviewed in \cref{sec:tparameters} \cref{sec:cable_gradient} and \cref{sec:ant_corrections}, noticable structure remains in the result.}
+    \label{fig:raw_singular_nima}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=.8\textwidth]{corrected_matlab_solution}
+    \caption{Calibrated temperature using the same experimental setup as in \cref{fig:raw_singular_nima} but with the S-parameter, cable temperature gradient and antenna temperature correction applied.The structure from the previous solution is mitigated and the calibration accuracy increases to an RMSE of 518 mK (78 MHz excised).}
+    \label{fig:corrected_singular_nima}
+\end{figure}
+
+The increase in accuracy exhibited by the MATLAB algorithm is intriguing, though we note that while comparable, the root mean square error relative to the solution average is not strictly the same as the error term $\sigma$ reported for our Bayesian pipeline. Much of the structure present in \cref{fig:raw_singular_nima} is reduced by the S-parameter and cable temperature gradient corrections giving calibration accuracies more similar to those of \cref{sec:hera_results}. It is however unclear if useful information is lost from the data when these corrections are applied. Continued experiments using either on-site data or simulations of astrophysical data will need to be performed for verification.
+
