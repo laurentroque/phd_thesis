@@ -196,17 +196,17 @@ An initial dataset was taken using all 12 calibration sources detailed in \cref{
 
 These results using the REACH receiver system exhibit much less structure than that of the HERA FEM, however the solution still does not resemble Gaussian noise as would be expected from a successful calibration. The average of the posterior samples shown in yellow once again does not correspond to the measured temperature of the mock antenna shown in red. There are also a few spikes in the solution that stand out qualitatively which we take to be RFI. We attribute the defects of our results to the absence of the front-end enclosure and the lack of its accompanying features such as the thermal management subsystem and RFI shielding. We also note the differences between the reported root mean square errors and our error term, $\sigma$. We approached this by reformulating our priors starting with setting the prior on our shape parameter
 \begin{equation}
-    a = 1,
+    a = 1 \,,
     \label{eqn:alpha_reform}
 \end{equation}
 which, for our inverse-gamma prior, corresponds to being very wide while still remaining normalised. We see in MEAN VARIANCE EQUATIONS IN INV-GAM DISTRIBITION WIKIPEDIA PAGE, that there is no mean or variance for $a=1$, indicating that the distribution is heavily tailed while reaching a peak at $b/(a + 1)$. Our prior for the scale parameter is therefore 
 \begin{equation}
-    b = \left(a + 1\right) \times \left(\frac{\sigma_{p}}{300}\right)^2.
+    b = \left(a + 1\right) \times \left(\frac{\sigma_{p}}{300}\right)^2 \,.
     \label{eqn:beta_reform}
 \end{equation}
 Here $\sigma_{p}$ is the level of noise which we expect to find which we appraise to be $\sim 1$ K based on our instrument construction. Additionally, $b$ is normalised by our assumed ambient temperature of 300 K which is then squared, giving $b$ dimensions of temperature squared. Our priors for the statistical spread of each of our five noise wave parameter values are set to 10. Given the $a + 1$ term in \cref{eqn:beta_reform}, this corresponds to five $\sigma$ widths and is dimensionless. We can confirm that the results are relatively insensitive to changes in the priors for our noise wave parameter values as the priors are very wide and we use a large amount of training data. Using our formulation for our updated prior volume $\mathbfss{V}^*$ in \cref{starred}, our posterior error term
 \begin{equation}
-    \sigma^2 = \Sigma^* = \left( \frac{b^*}{a^*} \right) \mathbfss{V}^*,
+    \sigma^2 = \Sigma^* = \left( \frac{b^*}{a^*} \right) \mathbfss{V}^* \,,
     \label{eqn:sigma_reform}
 \end{equation}
 which has dimensions of normalised temperature. We believe this reformulation to be robust and verified that the expected results are recovered using simulated data.
@@ -258,7 +258,7 @@ Omitting any redesign of the front-end, we may attempt to mitigate the effects o
     \begin{bmatrix}
         \frac{S_{12}S_{21}-S_{11}S_{22}}{S_{21}} & \frac{S_{11}}{S_{21}} \\
         \frac{-S_{22}}{S_{21}} & \frac{1}{S_{21}}
-    \end{bmatrix},
+    \end{bmatrix} \,,
     \label{eqn:tparams}
 \end{equation}
 where the S-parameters in the above matrix are reflection measurements of the offending paths through the MTS switch (e.g. the MTS-J1$\rightarrow$MTS-J2 path for calibration sources and MTS-J3$\rightarrow$MTS-J4 for the LNA). In the current analysis, measurements of the MTS switch were performed in the laboratory using the Keysight N5247A PNA-X. While this procedure contradicts our philosophy of an all-in-field calibration system, we believe it strengthens the foundation of our overall technique and future work will  be undertaken on a system design that either avoids multiple reference planes or facilitates in situ 2-port measurements of the MTS switch.
@@ -282,11 +282,11 @@ The traversing and reflected waves are related by
     \end{bmatrix}
     \begin{bmatrix}
         a_2 \\ b_2
-    \end{bmatrix},
+    \end{bmatrix} \,,
 \end{equation}
 where $\Gam{\mathrm{source}} = \frac{b_2}{a_2}$ and $\Gam{\mathrm{D.U.T.}} = \frac{b_1}{a_1}$. Wanting the reflection coefficient of the source, we expand as a system of equations that can be solved yielding
 \begin{equation}
-    \Gam{source} = \frac{ \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} }{ S_{12}^{\mathrm{MTS}} S_{21}^{\mathrm{MTS}} + S_{11}^{\mathrm{MTS}} \left( \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} \right) },
+    \Gam{source} = \frac{ \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} }{ S_{12}^{\mathrm{MTS}} S_{21}^{\mathrm{MTS}} + S_{11}^{\mathrm{MTS}} \left( \Gam{\mathrm{D.U.T.}} - S_{22}^{\mathrm{MTS}} \right) } \,,
 \end{equation}
 where the S-parameters are measurements of the MTS-J1$\rightarrow$MTS-J2 paths for corrections regarding sources and MTS-J3$\rightarrow$MTS-J4 for corrections of the LNA reflection coefficient. These corrections are applied to all S-parameter measurements.
 
@@ -300,7 +300,7 @@ Using simulations of a similar cascaded network made with Keysight’s PathWave 
 
 Following the above corrections to the reflection measurements made by the VNA, calibration source $S_{11}$’s are effectively taken from the MTS-J2 connection while the LNA $S_{11}$ is taken at the MTS-J4 connection. We note however that spectral measurements of the calibration sources must pass through the MTS-J2$\rightarrow$J4 path before reaching the LNA as shown by the purple dashed line in \cref{fig:overview}. In other words, the calibration sources see a D.U.T. consisting of the MTS-J2$\rightarrow$J4+LNA that is not seen by the VNA. We must once again use T-parameters to embed the path through the MTS switch onto the LNA reflection measurements to have a matched reference plane for our data. Following a similar calculation as above we find the corrected LNA reflection coefficient to be
 \begin{equation}
-    \Gam{\mathrm{LNA (corrected)}} = S_{22} + \frac{S_{12}S_{21}\Gam{\mathrm{LNA (original)}}}{1 - S_{11}\Gam{\mathrm{LNA (original)}}},
+    \Gam{\mathrm{LNA (corrected)}} = S_{22} + \frac{S_{12}S_{21}\Gam{\mathrm{LNA (original)}}}{1 - S_{11}\Gam{\mathrm{LNA (original)}}} \,,
 \end{equation}
 where the S-parameters correspond to measurements of the two-port network defined by the MTS-J2$\rightarrow$J4 inputs.
 
@@ -310,12 +310,12 @@ As shown in THE CALIBRATION SECTION, the accurate readings of the physical tempe
 
 We start by calculating the the realised gain of each source path which describes the actual gain that a device is able to achieve taking into account factors such as loss and mismatch
 \begin{equation}
-    G = \frac{ |S_{21}|^2 \left( 1 - |\Gam{\mathrm{R}}|^2 \right) }{ |1 - S_{11} \Gam{\mathrm{R}}|^2 \left( 1 - |\Gam{\mathrm{src}}|^2 \right) },
+    G = \frac{ |S_{21}|^2 \left( 1 - |\Gam{\mathrm{R}}|^2 \right) }{ |1 - S_{11} \Gam{\mathrm{R}}|^2 \left( 1 - |\Gam{\mathrm{src}}|^2 \right) } \,,
     \label{eqn:av_gain}
 \end{equation}
 where $S_{11}$ and $S_{22}$ are the forward S-parameters of the calibration cable in question. The reflection coefficient is also measured of the cable+switch+load construction and of the terminating resistor represented as $\Gam{\mathrm{src}}$ and $\Gam{\mathrm{R}}$ respectively with the former being the S-parameter data from our original equations in CALIBRATION MATS SECTION. Using the realised gain, we can model the effective temperature of each source as
 \begin{equation}
-    T_{\mathrm{src}} = GT_{\mathrm{R}} + (1 - G)T_{\mathrm{cab}},
+    T_{\mathrm{src}} = GT_{\mathrm{R}} + (1 - G)T_{\mathrm{cab}} \,,
     \label{eqn:temp_correction}
 \end{equation}
 where $T_{\mathrm{R}}$ and $T_{\mathrm{cab}}$ are the temperatures of the resistive load and cable measured by thermocouple during normal operation. 
@@ -324,11 +324,11 @@ where $T_{\mathrm{R}}$ and $T_{\mathrm{cab}}$ are the temperatures of the resist
 \subsection{Temperature gradients across the antenna}\label{sec:ant_corrections}
 For the majority of laboratory measurements, training data from calibration sources is used to derive a calibration solution for the current receiver state which is applied to mock antenna data yielding a calibrated antenna temperature. This mock antenna at the MTS-J2 reference plane, is made from a load-terminated 1 metre cable which also exhibits temperature discontinuities between the load, cable and connection to the MTS input. Following the same principles as \cref{sec:cable_gradient}, we compute the available gain using \cref{eqn:av_gain} and reflection measurements of the antenna construction as well as its constituent cable and load. For our mock antenna, we want $\T{sky}$ which will be the temperature at the terminating load. Rearranging \cref{eqn:temp_correction} for $\T{R}$
 \begin{equation}
-    \T{ATL} = \frac{1}{G} \left( \T{ant} + \left( G - 1 \right) \T{cab} \right),
+    \T{ATL} = \frac{1}{G} \left( \T{ant} + \left( G - 1 \right) \T{cab} \right) \,,
 \end{equation}
 where $\T{ATL}$ is the temperature at the antenna’s terminating load, $\T{ant}$ is the temperature of the mock antenna as measured at the receiver input and $\T{cab}$ is the temperature of the cable within the mock antenna construction. $\T{cab}$ can be approximated with the following
 \begin{equation}
-    \T{cab} = \frac{1}{L_{\mathrm{tot}}} \left( \T{int}L_{\mathrm{int}} + \T{ext}L_{\mathrm{ext}} \right),
+    \T{cab} = \frac{1}{L_{\mathrm{tot}}} \left( \T{int}L_{\mathrm{int}} + \T{ext}L_{\mathrm{ext}} \right) \,,
 \end{equation}
 where $\T{int}$ and $\T{ext}$ represent the the internal and external cable temperatures while $L_{\mathrm{int}}$ and $L_{\mathrm{ext}}$ represent the internal and external cable length. $L_{\mathrm{tot}}$ is the total cable length. For our mock antenna, $L_{\mathrm{ext}}$ is 100 cm and $L_{\mathrm{int}}$ is 28 cm.
 
@@ -373,3 +373,76 @@ The resulting fifteen smoothed $\mathbfss{X}$'s were then submitted to the MATLA
 The amount of work needed to reduce the calibration error on our mock antenna is intriguing. We suggest that the steps outlined above correspond to an overall reduction of noise with the $\mathbfss{X}$ vector smoothing corresponding to the S-parameters (see \cref{eqn:xunc,eqn:xl,eqn:xcos,eqn:xsin,eqn:xns}) and the averaging of the noise wave parameters corresponding to the spectral data indicating that a more accurate VNA and spectrometer may need to be employed. Averaging of the fifteen solutions indicates that increased integrations of the spectral data also increases the resulting accuracy (as one would expect)\footnote{This may be verified by visible inspection of calibration solutions with increased integration time}. The fifteen datasets taken however, correspond to a total 165 hours of spectral integration which is clearly not feasible for an experiment such as ours in which sky data is taken over night for six to eight hours. We also note that within the idealised laboratory environment, the ambient temperature varied by up to 3.5 degrees. While the TEC was able to maintain a relatively stable internal temperature within the receiver front-end, it is unclear how the device will perform over prolonged usage in the Karoo where outside temperatures are assumed to vary by much more. 
 
 % =========================================
+\section{A frequency-by-frequency Bayesian solver}
+\label{sec:fbyf}
+
+One clear difference between our MATLAB and Python calibration pipelines is the least squares solution for noise wave parameters at each frequency compared to the derivation of broadband noise wave parameters as polynomials in frequency, respectively. Independent investigations with a polynomial-based Bayesian pipeline developed by the EDGES team (though, not based on a conjugate prior approach) seem to corroborate our findings that a polynomial model for the noise wave parameters may not be the most appropriate at the desired level of sensitivity \citep{murray_calpap}. To test this, we developed an additional Bayesian calibration approach that solves for the set of five noise wave parameters at each frequency which we derive here.
+
+As in our CALIBRATION CHAPTER BAYESIAN SECTION derivation, we specify a likelihood as the probability of the data given our model $p( y \vert \boldsymbol{\theta} )$ where we assume that the variation or noise in our data is Gaussian
+\begin{equation}
+    \label{eqn:fbf_likelihood}
+    \mathrm{P}\big( y \given \boldsymbol{\theta} \big) = \frac{1}{ \sqrt{ 2 \pi \mathbfss{C} } } \exp \left\{ - \half \left( y - \mathbfit{X}\boldsymbol{\theta} \right)^{\top} \mathbfss{C}^{-1}  \left( y - \mathbfit{X}\boldsymbol{\theta} \right) \right\} \,,
+\end{equation}
+where $y$ is our temperature data, $\mathbfss{C}$ is a $5 \times 5$ data covariance matrix, $\mathbfit{X}$ is a vector of our data terms (\cref{eqn:xunc,eqn:xcos,eqn:xsin,eqn:xl,eqn:xns}) and $\boldsymbol{\theta}$ is a vector of our noise wave parameters $\T{unc}, \T{cos}, \T{sin}, \T{NS}$ and $\T{L}$, with all terms in \cref{eqn:fbf_likelihood} representative of the values at a single frequency\footnote{Notice that $\mathbfss{X}$ and $\boldsymbol{\Theta}$ from BAYESIAN CALIBRATION SECTION were matrices with one of the axes being across frequency.}. Similar to our derivation in \cref{chap:calibration}, we consider the log likelihood to simplify the analytic calculations and promote numerical stability. Expanding the expression in the exponential and reminding ourselves of the property regarding the transpose of a matrix product, $(\mathbfss{AB})^{\top} = \mathbfss{B}^{\top}\mathbfss{A}^{\top}$;
+\begin{align}
+    \log\mathcal{L} &= - \half \log |2 \pi \mathbfss{C}| - \half \left( y - \mathbfit{X}\boldsymbol{\theta} \right)^{\top} \mathbfss{C}^{-1} \left( y - \mathbfit{X}\boldsymbol{\theta} \right)
+    \label{eqn:fbf_loglike} \\
+    &= -\half \log |2 \pi \mathbfss{C}| - \half y^{\top} \mathbfss{C}^{-1} y + \half y^{\top} \mathbfss{C}^{-1} \mathbfit{X}\boldsymbol{\theta} + \half \boldsymbol{\theta}^{\top} \mathbfit{X}^{\top} \mathbfss{C}^{-1} y - \half \boldsymbol{\theta}^{\top} \mathbfit{X}^{\top} \mathbfss{C}^{-1} \mathbfit{X} \boldsymbol{\theta} \,.
+    \label{eqn:fbf_expand_loglike}
+\end{align}
+We then define the terms
+\begin{align}
+    \bm{\Sigma}^{-1} := \mathbfit{X}^{\top} \mathbfss{C}^{-1} \mathbfit{X} \,,
+    \label{eqn:fbf_covmat} \\
+    \boldsymbol{\mu} := \bm{\Sigma} \mathbfit{X}^{\top} \mathbfss{C}^{-1} y \,,
+    \label{eqn:fbf_mu}
+\end{align}
+where $\bm{\Sigma}$ is our $5 \times 5$ parameter covariance matrix and $\boldsymbol{\mu}$ is a length-5 vector of noise wave parameter distribution means. We then add and subtract the term $\half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu}$ to \cref{eqn:fbf_expand_loglike}, substitute \cref{eqn:fbf_covmat} and \cref{eqn:fbf_mu} followed by a rearrangement of terms,
+\begin{equation}
+    \begin{split}
+    \log\mathcal{L} = - \half \log |2 \pi \mathbfss{C}| &-\half y^{\top} \mathbfss{C}^{-1} y + \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \\
+     &-\half \boldsymbol{\theta}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\theta} + \half \boldsymbol{\theta}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} + \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\theta} - \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \,,
+    \label{eqn:loglike_subst}
+    \end{split}
+\end{equation}
+where we condense the second line of \cref{eqn:loglike_subst} (compare to the expansion of \cref{eqn:fbf_loglike,eqn:fbf_expand_loglike}),
+\begin{equation}
+    \log\mathcal{L} = -\half \log |2 \pi \mathbfss{C}| -\half y^{\top} \mathbfss{C}^{-1} y + \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu}  -\half \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)^{\top} \bm{\Sigma}^{-1} \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right) \,.
+    \label{eqn:condense_fbf_loglike}
+\end{equation}
+Re-exponentiating to retrieve our likelihood we have,
+\begin{equation}
+    \begin{split}
+    \mathcal{L} = |2 \pi \mathbfss{C}|^{-\half} &\times \exp \left\{ -\half y^{\top} \mathbfss{C}^{-1} y \right\} \times \exp \left\{ \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \right\} \\
+    &\times \exp \left\{ -\half \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)^{\top} \bm{\Sigma}^{-1} \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right) \right\} \,.
+    \label{eqn:condense_fbf_like_2}
+    \end{split}
+\end{equation}
+
+We desire to find the set of noise wave parameters with the maximal evidence at each frequency. The analytic equation for the evidence, $\mathcal{Z}$, is
+\begin{equation}
+    \mathcal{Z} = \int \mathcal{L} \frac{1}{\mathbfss{V}} d\boldsymbol{\theta} \,,
+    \label{eqn:fbf_evidence}
+\end{equation}
+where our prior volume $\mathbfss{V}$ makes $\frac{1}{\mathbfss{V}}$ our prior distribution and we are integrating over the space of possible noise wave parameters $\boldsymbol{\theta}$. Pluggin in our expression for $\mathcal{L}$ and factoring from the integral terms independent of $\boldsymbol{\theta}$,
+\begin{equation}
+    \mathcal{Z} = \frac{1}{\mathbfss{V}} |2 \pi \mathbfss{C}|^{-\half} \times \exp \left\{ -\half y^{\top} \mathbfss{C}^{-1} y \right\} \times \exp \left\{ \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \right\} \times \int e^{-\half \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)^{\top} \bm{\Sigma}^{-1} \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)} d\boldsymbol{\theta} \,,
+    \label{eqn:fbf_evidence_gauss}
+\end{equation}
+where we recognise the terms in the intergral as a Gaussian multiplied by its normalising constant,
+\begin{equation}
+    \mathcal{Z} = \frac{1}{\mathbfss{V}} |2 \pi \mathbfss{C}|^{-\half} \times \exp \left\{ -\half y^{\top} \mathbfss{C}^{-1} y \right\} \times \exp \left\{ \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \right\} \times |2 \pi \bm{\Sigma}|^{\half} \,.
+    \label{eqn:fbf_evidence_final}
+\end{equation}
+It is this equation that we will attempt to maximise with a gradient descent giving us noise wave parameter distribution means ($\boldsymbol{\mu}$) and covariances ($\bm{\Sigma}$) that are best supported by the data. From Bayes' theorem our posterior distribution, $\mathrm{P}$, for our noise wave parameters is,
+\begin{equation}
+    \log \mathrm{P} = \log \mathcal{L} + \log \frac{1}{\mathbfss{V}} - \log \mathcal{Z} \,.
+\end{equation}
+Plugging in the logged expressions for \cref{eqn:condense_fbf_like_2} and \cref{eqn:fbf_evidence_final}, we find many of the terms cancel. Exponentiating our logged posterior reveals yet another Gausian form,
+\begin{equation}
+    \mathrm{P} \big( \boldsymbol{\theta} \given y \big)= \frac{1}{\sqrt{2 \pi \bm{\Sigma}}} e^{-\half \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)^{\top} \bm{\Sigma}^{-1} \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)} \,,
+    \label{eqn:fbf_posterior}
+\end{equation}
+where we build a multivariate noise wave parameter posterior distribution from the optimised $\boldsymbol{\mu}$ and $\bm{\Sigma}$ from the maximised evidence.
+
+Upon inspection of the likelihood (\cref{eqn:condense_fbf_like_2}), evidence (\cref{eqn:fbf_evidence_gauss}) and posterior (\cref{eqn:fbf_posterior}), we point the common Gaussian form. Our prior distribution for the noise wave parameters however is an unregulated uniform prior eqaul to one over the prior volume, $\mathbfss{V}$, and effectively an infinite-length rectangle in every direction in parameter space. By selecting a Gaussian form for our priors, we may be able to mitigate points corrupted by interference through constraint to values surrounding distribution means. Further exploration and testing of priors is intended to be a topic of future work. 

@@ -125,9 +125,9 @@ at each frequency. We can see here that there are no squared or higher-order ter
     \end{split}
 \end{equation}
 
-Under this formulation, all of our data; the reflection coefficient measurements and power spectral densities, are grouped in an $\mathbfss{X}$ vector which forms a matrix where one of the axes is frequency. The calibration parameters as frequency-dependent polynomials of varying degree are collected into a $\boldsymbol{\boldsymbol{\Theta}}$ vector which serves as our model describing $N_{\mathrm{data}}$. Applying these definitions condenses the calibration equation into
+Under this formulation, all of our data; the reflection coefficient measurements and power spectral densities, are grouped in an $\mathbfss{X}$ vector which forms a matrix where one of the axes is frequency. The calibration parameters as frequency-dependent polynomials of varying degree are collected into a $\boldsymbol{\Theta}$ vector which serves as our model describing $N_{\mathrm{data}}$. Applying these definitions condenses the calibration equation into
 \begin{equation}\label{eqn:linearmodel}
-  \y = \mathbfss{X}\boldsymbol{\boldsymbol{\Theta}}+\sigma,
+  \y = \mathbfss{X}\boldsymbol{\Theta}+\sigma,
 \end{equation}
 where $\y$ is a vector over frequency and $\sigma$ is a noise vector representing our error. Since EDGES assumes that each power spectral density measurement is frequency independent, we have assumed that $\sigma$ is a multivariate normal distribution. This assumption is implicit in the EDGES analysis in which they use a least-squares minimisation approach for solving model parameters.
 

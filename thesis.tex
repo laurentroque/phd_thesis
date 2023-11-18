@@ -85,8 +85,12 @@
 
 \usepackage{cleveref}
 \usepackage{longtable}
+\usepackage{bm}
 \usepackage{amsmath}
 \usepackage{epigraph}
+
+% Needed for likelihood `curly' L notation
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
 \newcommand{\T}[1]{T_{\mathrm{#1}}}
 \newcommand{\psd}[1]{P_{\mathrm{#1}}}
@@ -97,6 +101,7 @@
 \newcommand\given[1][]{\:#1\vert\:}
 \newcommand{\mathbfss}[1]{\textbf{\textsf{#1}}}
 \newcommand{\mathbfit}[1]{\textbf{\textit{#1}}}
+\newcommand{\half}{\frac{1}{2}}
 
 \pdfminorversion=7
 
