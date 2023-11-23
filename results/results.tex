@@ -353,7 +353,7 @@ After evaluating the results from \cref{sec:hera_results} through \cref{sec:resp
 The increase in accuracy exhibited by the MATLAB algorithm is intriguing, though we note that while comparable, the root mean square error relative to the solution average is not strictly the same as the error term $\sigma$ reported for our Bayesian pipeline. Much of the structure present in \cref{fig:raw_singular_nima} is reduced by the S-parameter and cable temperature gradient corrections giving calibration accuracies more similar to those of \cref{sec:hera_results}. It is however unclear if useful information is lost from the data when these corrections are applied. Continued experiments using either on-site data or simulations of astrophysical data will need to be performed for verification.
 
 % =========================================
-\subsection{Averaging results to bring the noise down}\label{matlab_avg_results}
+\subsection{Averaging results to bring the noise down}\label{sec:matlab_avg_results}
 We wanted to determine under what conditions we could get a calibration accuracy under 100 mK. While the below method may not adhere entirely to the philosophy of a fast, in-the-field calibration technique, we found the results interesting enough to present here. For this experiment, we took a collection of fifteen independent training datasets of the ten calibrators used in the previous section each integrated for 20 minutes with the TEC set to maintain at 30 \textdegree C internal receiver temperature throughout. All of the data was first masked to the 50--130 MHz band followed by the application of the S-parameter and cable temperature gradients discussed in \cref{sec:tparameters} and \cref{sec:cable_gradient}. Once the $\mathbfss{X}$ vector is built following \cref{eqn:theta}, a smoothing spline factor of 0.999999999\footnote{with a factor of 1 being no smoothing} was applied to each element of $\mathbfss{X}$ to effectively reduce noise on the reflection measurements.
 
 The resulting fifteen smoothed $\mathbfss{X}$'s were then submitted to the MATLAB least squares pipeline using a Moore-Penrose pseudoinverse to determine the noise wave parameters. Artefacts in the calculated noise wave parameters were the excised through replacement with NaN’s corresponding to 6.2 MHz of the 80 MHz-wide observation band. The fifteen noise wave parameter sets, one of which shown in \cref{fig:ls_nwps}, were then averaged and the resulting single set of noise wave parameters were then applied to the fifteen sets of mock antenna data which were further corrected using the procedure discussed in \cref{sec:ant_corrections}. Finally the fifteen antenna solutions were averaged to produce a solution with a root mean square error of 80 mK from the solution average as shown in \cref{fig:nima_result}.
@@ -374,7 +374,7 @@ The amount of work needed to reduce the calibration error on our mock antenna is
 
 % =========================================
 \section{A frequency-by-frequency Bayesian solver}
-\label{sec:fbyf}
+\label{sec:fbf}
 
 One clear difference between our MATLAB and Python calibration pipelines is the least squares solution for noise wave parameters at each frequency compared to the derivation of broadband noise wave parameters as polynomials in frequency, respectively. Independent investigations with a polynomial-based Bayesian pipeline developed by the EDGES team (though, not based on a conjugate prior approach) seem to corroborate our findings that a polynomial model for the noise wave parameters may not be the most appropriate at the desired level of sensitivity \citep{murray_calpap}. To test this, we developed an additional Bayesian calibration approach that solves for the set of five noise wave parameters at each frequency which we derive here.
 
@@ -424,7 +424,7 @@ We desire to find the set of noise wave parameters with the maximal evidence at 
     \mathcal{Z} = \int \mathcal{L} \frac{1}{\mathbfss{V}} d\boldsymbol{\theta} \,,
     \label{eqn:fbf_evidence}
 \end{equation}
-where our prior volume $\mathbfss{V}$ makes $\frac{1}{\mathbfss{V}}$ our prior distribution and we are integrating over the space of possible noise wave parameters $\boldsymbol{\theta}$. Pluggin in our expression for $\mathcal{L}$ and factoring from the integral terms independent of $\boldsymbol{\theta}$,
+where our prior volume $\mathbfss{V}$ makes $\frac{1}{\mathbfss{V}}$ our prior distribution and we are integrating over the space of possible noise wave parameters $\boldsymbol{\theta}$. Plugging in our expression for $\mathcal{L}$ and factoring from the integral terms independent of $\boldsymbol{\theta}$,
 \begin{equation}
     \mathcal{Z} = \frac{1}{\mathbfss{V}} |2 \pi \mathbfss{C}|^{-\half} \times \exp \left\{ -\half y^{\top} \mathbfss{C}^{-1} y \right\} \times \exp \left\{ \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \right\} \times \int e^{-\half \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)^{\top} \bm{\Sigma}^{-1} \left( \boldsymbol{\theta} - \boldsymbol{\mu} \right)} d\boldsymbol{\theta} \,,
     \label{eqn:fbf_evidence_gauss}
@@ -434,7 +434,7 @@ where we recognise the terms in the intergral as a Gaussian multiplied by its no
     \mathcal{Z} = \frac{1}{\mathbfss{V}} |2 \pi \mathbfss{C}|^{-\half} \times \exp \left\{ -\half y^{\top} \mathbfss{C}^{-1} y \right\} \times \exp \left\{ \half \boldsymbol{\mu}^{\top} \bm{\Sigma}^{-1} \boldsymbol{\mu} \right\} \times |2 \pi \bm{\Sigma}|^{\half} \,.
     \label{eqn:fbf_evidence_final}
 \end{equation}
-It is this equation that we will attempt to maximise with a gradient descent giving us noise wave parameter distribution means ($\boldsymbol{\mu}$) and covariances ($\bm{\Sigma}$) that are best supported by the data. From Bayes' theorem our posterior distribution, $\mathrm{P}$, for our noise wave parameters is,
+It is this equation that we will attempt to maximise with a gradient descent giving us noise wave parameter distribution means ($\boldsymbol{\mu}$), spreads and covariances ($\bm{\Sigma}$) that are best supported by the data. From Bayes' theorem our posterior distribution, $\mathrm{P}$, for our noise wave parameters is,
 \begin{equation}
     \log \mathrm{P} = \log \mathcal{L} + \log \frac{1}{\mathbfss{V}} - \log \mathcal{Z} \,.
 \end{equation}
