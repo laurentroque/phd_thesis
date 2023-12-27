@@ -124,7 +124,7 @@ A diagram illustrating the evolution of the sky signal during this process in sh
 \begin{figure}
     \centering
     \includegraphics[width=.7\textwidth]{nsdiag}
-    \caption{Diagram showing the evolution of the 21-cm signal hampered by astrophysical foregrounds, convolvution with the antenna beam and the emergence of measurement noise before calibration to retrieve the sky temperature.}
+    \caption{Diagram showing the evolution of the 21-cm signal hampered by astrophysical foregrounds, convolution with the antenna beam and the emergence of measurement noise before calibration to retrieve the sky temperature.}
     \label{fig:nsfig}
 \end{figure}
 The integral in \cref{signal} is assessed through foreground and beam modelling techniques such as those discussed in \citet{dom} while modelling of $N_{\mathrm{data}}$ from the (statistical) properties of $D(\nu, t)$ is accomplished through calibration.
@@ -135,7 +135,7 @@ The framework for \textsc{Excalibrate} follows the Dicke switching strategy used
     \psd{cal} = g_{\mathrm{sys}} \Bigg[ \T{cal}\left(1-|\Ga|^2\right)\left|\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right|^2 + \T{unc}|\Ga|^2\left|\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right|^2 \\
     + \T{cos}\operatorname{Re}\left(\Ga\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right) + \T{sin}\operatorname{Im}\left(\Ga\frac{\sqrt{1 - |\Gam{rec}|^2}}{1-\Ga\Gam{rec}}\right) + T_0 \Bigg],
 \end{multline}
-where $\psd{cal}$, $\Gam{cal}$ and $\T{cal}$ are the power spectral density, reflection coefficient and measured temperature of the calibratrion source under test at the receiver input. $g_{\mathrm{sys}}$ is the system gain referenced to the receiver input. Additionally, the phase terms accompanying $\T{cos}$ and $\T{sin}$ in \cref{eqn:pant} are now described by the Re() and Im() arguments which are equivalent to $\phi$ in the EDGES notation \cite{rogersCal}.
+where $\psd{cal}$, $\Gam{cal}$ and $\T{cal}$ are the power spectral density, reflection coefficient and measured temperature of the calibration source under test at the receiver input. $g_{\mathrm{sys}}$ is the system gain referenced to the receiver input. Additionally, the phase terms accompanying $\T{cos}$ and $\T{sin}$ in \cref{eqn:pant} are now described by the Re() and Im() arguments which are equivalent to $\phi$ in the EDGES notation \cite{rogersCal}.
 
 Similar assumptions of negligible reflection coefficients for the internal references as well as an independent reference plane for these devices (once again, see \cref{fig:overview}) allow for $\psd{L}$ and $\psd{NS}$ to remain the same as \cref{eqn:pl} and \cref{eqn:pns}. Expanding \cref{eqn:tant_star} using \cref{eqn:reach_pant,eqn:pl,eqn:pns} yields our version of the linear relationship between the uncalibrated input temperature and a final calibrated temperature of any device connected to the receiver input
 \begin{multline}
@@ -145,7 +145,7 @@ Similar assumptions of negligible reflection coefficients for the internal refer
 \end{multline}
 We note that our reformulation solves for $\T{L}$ and $\T{NS}$ as parameters directly rather than using the corrective $C$ factors of the EDGES procedure. Some advantages to our approach are that all parameters to be solved for are now in units of temperature as well as the verifiability of the $\T{L}$ and $\T{NS}$ parameters through comparison with thermocouple readings and manufacturer specifications (compare \cref{fig:ns_diode} with \cref{fig:ls_nwps}) respectively. 
 
-We will now simpify the notation of our approach by defining the following terms;
+We will now simplify the notation of our approach by defining the following terms;
 \begin{equation}\label{eqn:xunc}
     X_{\mathrm{unc}} = -\frac{|\Ga|^2}{ 1-|\Ga|^2}, 
 \end{equation}
@@ -213,12 +213,12 @@ which simply represents the notion that given some background information $I$, t
     \mathrm{prob}(Y,X|I) = \mathrm{prob}(Y|X,I) \times \mathrm{prob}(X|I),
     \label{eqn:product_transpose}
 \end{equation}
-which states the transpose of \cref{eqn:productrule}; the probability that $Y$ and $X$ are both true is equal to the probabiility that $Y$ is true given $X$ times the probability that $X$ is true. Adhering to the assertion that identical information leads to identical conclusions, the statement ‘both $X$ and $Y$ are true’ must be equivalent to the statement ‘both $Y$ and $X$ are true’ and we can thus equate \cref{eqn:productrule} and \cref{eqn:product_transpose} which, with some rearrangement, reveals Bayes' Theorem:
+which states the transpose of \cref{eqn:productrule}; the probability that $Y$ and $X$ are both true is equal to the probability that $Y$ is true given $X$ times the probability that $X$ is true. Adhering to the assertion that identical information leads to identical conclusions, the statement ‘both $X$ and $Y$ are true’ must be equivalent to the statement ‘both $Y$ and $X$ are true’ and we can thus equate \cref{eqn:productrule} and \cref{eqn:product_transpose} which, with some rearrangement, reveals Bayes' Theorem:
 \begin{equation}
     \mathrm{prob}(X|Y,I) = \frac{\mathrm{prob}(Y|X,I) \times \mathrm{prob}(X|I)}{\mathrm{prob}(Y|I)}.
     \label{eqn:bayes}
 \end{equation}
-This equation is the foundation for Bayesian statistics and relates the probability that a model $X$ is true given data $Y$ and background information $I$ to a quoteint of three probability distributions. The first quantity in the numerator of \cref{eqn:bayes}, $\mathrm{prob}(X|I)$ is our ‘prior’ probability representing any prior knowledge before analysis of the data. In the light of data from experimental measurements, the likelihood function $\mathrm{prob}(Y|X,I)$ updates our prior distribution to a ‘posterior’ probability $\mathrm{prob}(X|Y,I)$ which represents our belief in the hypothesis after taking the data into account. The denominator of \cref{eqn:bayes} is a normalisation constant known as the ‘evidence’. When evaluating competing models such as plausible but independent sets of calibration parameter values, comparison of the evidence will determine the model preferred by the data (through the notion that a more likely proposal will have a larger numerical value). This will allow us to estimate the calibration parameters through the evaluation of competing models for the one that maximises the evidence.
+This equation is the foundation for Bayesian statistics and relates the probability that a model $X$ is true given data $Y$ and background information $I$ to a quotient of three probability distributions. The first quantity in the numerator of \cref{eqn:bayes}, $\mathrm{prob}(X|I)$ is our ‘prior’ probability representing any prior knowledge before analysis of the data. In the light of data from experimental measurements, the likelihood function $\mathrm{prob}(Y|X,I)$ updates our prior distribution to a ‘posterior’ probability $\mathrm{prob}(X|Y,I)$ which represents our belief in the hypothesis after taking the data into account. The denominator of \cref{eqn:bayes} is a normalisation constant known as the ‘evidence’. When evaluating competing models such as plausible but independent sets of calibration parameter values, comparison of the evidence will determine the model preferred by the data (through the notion that a more likely proposal will have a larger numerical value). This will allow us to estimate the calibration parameters through the evaluation of competing models for the one that maximises the evidence.
 
 
 % =========================================
