@@ -28,7 +28,7 @@ In response to these considerations, the REACH receiver system is comprised of t
 
 
 % =========================================
-\subsection{Receiver front-end}\label{sec:frontend}
+\section{Receiver front-end}\label{sec:frontend}
 The front-end contains the most sensitive radiometer components housed in a sealed enclosure to facilitate calibration of the instrument to the highest accuracy. As the maintenance of environmental stability is difficult to achieve over long periods of time in the field, the project’s emphasis on an in situ calibration could only be achieved through a conscious effort to minimise the volume of the receiver front-end such that a constant temperature is kept via thermal devices while drawing a sustainable amount of power from the solar panels which allocate a maximum of 135 W of power to the front-end. Given this as a primary focus during the design process, nearly all of the components in the front-end were chosen based on a careful balance between their compact size and superior quality.
 
 
@@ -447,7 +447,7 @@ The finalised construction weighs 29 kilograms and, as stated previously, is all
 
 
 % =========================================
-\subsection{Receiver back-end}\label{sec:backend}
+\section{Receiver back-end}\label{sec:backend}
 The receiver back-end houses the components critical for remote communication away from the deployment site, power distribution to the instrument as a whole and measurement subsystems that are less sensitive to environmental effects. 100 metres away from the dipole antenna, the receiver back-end sits below ten solar panels as diagrammed in \cref{fig:system_diagram}. This distance was chosen to avoid radio-frequency reflections off the solar panel and back-end faces as well as serving as a potential central node to be equidistant from future antennas. Under the solar panel construction is a radio-frequency electromagnetic-compatibility (RF-EMC) enclosure custom made by Interference Testing and Consultancy Services Ltd. to mitigate the effects of external RFI on our measurements as well as any potential EMI leakage from our own instrument that may be picked up by nearby experiments. Designs for the RF-EMC enclosure were informed by similar constructions used with the HERA experiment that incorporate considerations of the on-site environment as well as compliance with the EMC requirements of the Karoo Radio Astronomy Reserve. A conceptual diagram of the RF-EMC enclosure is shown in \cref{fig:backend}.
 \begin{figure}
     \centering
@@ -583,7 +583,7 @@ The completed build was too large to be shipped practically and was disassembled
 
 
 % =========================================
-\subsection{Automation}
+\section{Automation}
 The nearest settlement to the REACH deployment site in the Karoo Radio Reserve is Carnarvon, about 90 kilometres away and about seven hour’s drive from the central international airport in Cape Town. Such isolation made the development of a fully autonomous instrument a necessity and procedures were developed to facilitate remote access and communication with the device. In our procedure, the receiver front-end(s) and back-end are controlled and monitored by our management software running on the Lenovo processing server which oversees operation of the instrument such as the configuration of hardware components, data management and directing subroutines. Within our management software, a variety of different communication protocols are used. The Python FPGA Board Interface Layer (PyFABIL) is used to interact with the iTPM while the Standard Commands for Programmable Instruments (SCPI) protocol is used to contact the VNA. Proprietary USB protocols in a Python wrapper are used by the TC-08 temperature sensor with the TEC needing an additional proprietary Windows-based Application Programming Interface which entails a virtual machine running in our Linux desktop environment. Signal path configuration through the microcontroller unit is assigned to Teensy ports accessed through a command line serial interface. A crib sheet useful for the development of automated procedures such as an observation schedule is shown in \cref{fig:controller_pinout} which details the specific devices contactable through individual microcontroller ports.
 \begin{figure}
     \centering
@@ -612,7 +612,7 @@ The receiver back-end transmits integrated spectra as Streaming Protocol for Exc
 
 
 % =========================================
-\subsection{Deployment}
+\section{Deployment}
 Throughout 2022, the deployment site in South Africa was prepared while receiver development took place. Ditches were dug for support posts to be placed for the raised ground plane mesh suspended by guide wires. Due to natural land slope on site, the ground plane was erected between 1 metre and 1.2 metres above ground level to maintain a level construction. Support structures were built and the antenna was then installed as shown in \cref{fig:ground_plane}.
 \begin{figure}
     \centering
