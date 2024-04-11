@@ -338,7 +338,7 @@ Reflection coefficients of the calibration sources, LNA and antenna are measured
     \caption{Copper Mountain Technologies TR1300/1 Vector Network Analyser. Image taken from Copper Mountain Technologies website: \url{https://coppermountaintech.com/vna/tr1300-1-2-port-1-3-ghz-analyzer/}.}
     \label{fig:vna}
 \end{figure}
-The main consideration for including this VNA model was the small $28.5 \times 14.2 \times 4$ cm form factor for inclusion in the front-end enclosure. The VNA measurement accuracy as provided by the manufacturer is shown in \cref{tab:vna_acc}.
+The main consideration for including this VNA model was the small $28.5 \times 14.2 \times 4$ cm form factor for incorporation into the front-end enclosure. The VNA measurement accuracy as provided by the manufacturer is shown in \cref{tab:vna_acc}.
 \begin{table}
     \begin{center}
     \begin{tabular}{ |c|c| }
@@ -355,25 +355,21 @@ The main consideration for including this VNA model was the small $28.5 \times 1
     \end{center}
 \end{table}
 
-Reflection coefficient measurements of various receiver components is shown in \cref{fig:s11_meas}. 
+Reflection coefficient measurements of various receiver components are shown in \cref{fig:s11_meas}. 
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{s11_meas}
     \caption{Reflection coefficients for various receiver components including the LNA and simulated antenna.}
     \label{fig:s11_meas}
 \end{figure}
-Upon inspection of \cref{tab:vna_acc}, one may note that the VNA is not rated for extremely low reflection measurements below -35 dB such as the ambient temperature and heated $50\Omega$ loads shown in \cref{fig:s11_meas}. In order to quantify the quality of our measurements in this low-reflection regime, we use the manufacturer provided data of \cref{tab:vna_acc} and calculate a spread in $\pm$dBs representing our measurement error for the regions our machine is rated for. We then convert this spread from dB to linear using
-\begin{equation}
-    \mathrm{measurement \ spread} = 10^{\frac{\mathrm{measurement} + \mathrm{error}}{10}} - 10^{\frac{\mathrm{measurement} - \mathrm{error}}{10}}.
-    \label{eq:vna_spread}
-\end{equation}
-The linear measurement spreads are plotted in \cref{fig:vna_acc} where we have fitted the manufacturer provided data with a decaying exponential using \textsc{SciPy.optimize} and extrapolated to the ranges applicable to the 50$\Omega$ loads. \begin{figure}
+Upon inspection of \cref{tab:vna_acc}, one may note that the VNA is not rated for extremely low reflection measurements below -35 dB such as the ambient temperature and heated $50\Omega$ loads shown in \cref{fig:s11_meas}. In order to estimate the quality of our measurements in this low-reflection regime, we fit the manufacturer provided data of \cref{tab:vna_acc} with a linear, exponential and quadratic function and extrapolate to the ranges applicable to the $50 \Omega$ loads as shown in \cref{fig:vna_acc}.
+\begin{figure}
     \centering
     \includegraphics{vna_accuracy}
-    \caption{VNA accuracy extrapolated to an extended measurement range for linear, exponential and quadratic fits to the manufacturer-provided data as shown in \cref{tab:vna_acc}. For $S_{11}$ measurements at levels as low as -50 dB, we regard a measurement accuracy of $\pm 15$ dB to be reasonable from comparison of the extrapolated fits.}
+    \caption{VNA accuracy extrapolated to an extended measurement range for linear, exponential and quadratic fits to the manufacturer-provided data as shown in \cref{tab:vna_acc}. For $S_{11}$ measurements at levels as low as -50 dB, we regard a measurement accuracy of $\pm 15$ dB to be reasonable from comparison of the extrapolated fits. We note that increasing $y$-scale in the graph represents a decrease in measurement accuracy.}
     \label{fig:vna_acc}
 \end{figure}
-For reflection coefficient measurements $\sim -45$ dB, we find a linear measurement spread of 0.002 corresponding to a VNA accuracy of $\pm$10 dB. In the logarithmic scale of dBs, this measurement accuracy is acceptable. A similar exercise of fitting a polynomial curve to the manufacturer provided data in the dB scale gives a similar but less conservative value for extrapolated measurement accuracy. We note that future iterations of the receiver front-end may benefit from inclusion of a VNA rated for low-reflection measurements but the small form factor of the TR1300/1 may be difficult to achieve.
+With the limited information provided in \cref{tab:vna_acc}, the different fits provide a range of measurement accuracies. Comparing the fits for reflection coefficient measurements up to 50 dB, we expect a measurement accuracy $\pm 15$ dBs with an optimistic estimate $< \pm 10$ dBs and a pessimistic value of $\pm 25$ dBs. In the logarithmic scale of dBs, this measurement accuracy is acceptable. We note that future iterations of the receiver front-end may benefit from inclusion of a VNA rated for low-reflection measurements but the small form factor of the TR1300/1 may be difficult to achieve.
 
 A Python script using SCPI commands was developed in order to interact with and automate the VNA. This included a separate process to calibrate the VNA itself before proceeding with calibration of the receiver. VNA calibration was undertaken using short, open and load (SOL) standards from another Kirkby 85033 50$\Omega$ SMA calibration kit to maximise measurement accuracy of the reflection coefficients throughout a 50–-200 MHz band. The VNA calibration is tested against an additional $50\Omega$ test load that was measured in Cambridge with a Keysight N5247A PNA-X Network Analyser capable of providing some of the highest quality reflection measurements in the industry\footnote{The 49 kg PNA-X, with a size of $649 \times 482 \times 280$ mm, unfortunately proves to be too large for in-field deployment.}. A reflection coefficient of the test load measured by the TR1300/1 that deviates from the PNA-X measurement by more than 5\% automatically triggers a re-calibration of the VNA before proceeding with calibration of the rest of the instrument. As the best-in-class PNA-X linear uncertainty on reflection measurements is listed to be $\pm 0.019$ dB across the frequencies of interest, we take a TR1300/1 measurement within five percent of the PNA-X measurement to be acceptable. We further corroborate this by higlighting that we have not found the VNA measurements to be a limiting factor to the experiment at this stage through the investigations discussed in \cref{sec:responses}.
 

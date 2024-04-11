@@ -273,12 +273,14 @@ To allow for a smooth frequency dependency as assumed in previous calibration pr
     \T{i} = \begin{pmatrix}
     \T{i}^{[0]}, & \T{i}^{[1]}, & \T{i}^{[2]}, & ..., & \T{i}^{[n]}
     \end{pmatrix},
+    \label{eqn:nwp_matrix}
 \end{equation}
 where $i$ is our noise wave parameter label; $i \in \{\mathrm{unc, \ cos, \ sin , \ NS, \ L}\}$, modelled using $n+1$ polynomial coefficients. Likewise
 \begin{equation}
     \mathbfss{X}_{i} = \begin{pmatrix}
     \mathbfss{X}_{i}, & \mathbfss{X}_{i}\left(\frac{\nu}{\nu_0}\right), & \mathbfss{X}_{i}{\left(\frac{\nu}{\nu_0}\right)}^2, & ..., &  \mathbfss{X}_{i}{\left(\frac{\nu}{\nu_0}\right)}^{n}
     \end{pmatrix},
+    \label{eqn:data_matrix}
 \end{equation}
 where $\nu$ is a vector of input frequencies which are raised to powers up to $n$. For a vector of $n$'s attributed to our calibration parameters, under this notation multiplication in \cref{eqn:linearmodel} is element-wise and \cref{eqn:ev} is effectively $p\left(\y|\mathbfit{n}\right)$. Assuming a uniform prior on $\mathbfit{n}$, inverting Bayes' theorem gives $p\left(\mathbfit{n}|\y\right)$ for use in model comparison in which the relative probabilities of models can be evaluated in light of the data and priors. Occam’s razor advises whether the extra complexity of a model is needed to describe the data \citep{trotta}, permitting optimisation of the polynomial orders for individual noise wave parameters as detailed in \cref{sec:reach_formalism}. By taking a random sampling of the resulting posterior, we characterise the noise wave parameters as multivariate distributions depicted in contour plots which exhibit a peak value accompanied by $1\sigma$ and $2\sigma$ variance as well as correlation between parameters inferred from a covariance matrix.
 
@@ -295,3 +297,5 @@ The first probability in the integral is the likelihood for our antenna measurem
     \end{aligned}
 \end{equation}
 where $I$ is the $N \times N$ identity matrix and $a^*$, $b^*$, $\boldsymbol{\mu}^*$ and $\mathbfss{V}^*$ are defined in \cref{starred}. This new distribution on $\mathbfit{T}_{\mathrm{sky}}$ corresponds to a set of points with error bars and represents the calibrated sky temperature as the output of the receiver.
+
+The conjugate approach outlined in this section avoids the need for a complicated numerical algorithm, leading to a lightweight Python code. The equations for our prior (\cref{eqn:prior}), likelihood (\cref{likelihood}) and evidence (\cref{eqn:ev}) are written out explicitly as variables in the code and following this, \textsc{SciPy.optimize} compares different noise wave parameter polynomial orders to find the set that maximises the evidence. Posterior distributions are sampled using GetDist \citep{getdist} for the noise wave parameter coefficient values along with an output for our $\sigma$ value. Noise wave parameter polynomials built from the sampled coefficients are then applied to the calibration equation as matrices as shown in \cref{eqn:nwp_matrix}, along with the antenna data as \cref{eqn:data_matrix} to calculate a calibrated antenna temperature from \cref{eqn:linearmodel}.
