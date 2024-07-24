@@ -92,6 +92,7 @@
     colorlinks=true,
     urlcolor=blue,
 }
+\usepackage{pdfpages}
 
 % Needed for likelihood `curly' L notation
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
@@ -108,6 +109,7 @@
 \newcommand{\half}{\frac{1}{2}}
 
 \pdfminorversion=7
+
 
 % ************************ Thesis Information & Meta-data **********************
 % Thesis title and author information, refernce file for biblatex
@@ -135,9 +137,9 @@
 
 % ******************************** Front Matter ********************************
 \begin{document}
-
 \frontmatter
 
+\includepdf[scale=0.85, trim=1cm 1cm 1cm 1cm, clip, angle=-0.35]{figs/deposit_declaration.pdf}
 \maketitle
 
 \include{dedication/dedication}
